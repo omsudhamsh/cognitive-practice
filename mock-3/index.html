@@ -1,0 +1,1542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Capgemini Exceller 2027 &mdash; Core CS Concepts Mock Assessment</title>
+<style>
+  :root{
+    --bg:#0b0f16;
+    --bg2:#111826;
+    --panel:#151d2c;
+    --panel2:#1b2537;
+    --line:#27324a;
+    --line2:#33415e;
+    --txt:#dde5f2;
+    --muted:#8b9ab5;
+    --muted2:#6f7e9b;
+    --accent:#4f8cff;
+    --accent2:#3b6fd4;
+    --ok:#35c98b;
+    --okbg:#12301f;
+    --bad:#ff6b6b;
+    --badbg:#331a1e;
+    --warn:#f0b429;
+    --mono:"JetBrains Mono","Cascadia Mono",Consolas,"SF Mono",Menlo,monospace;
+    --sans:"Inter","Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--bg);
+    color:var(--txt);
+    font-family:var(--sans);
+    font-size:16px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1080px;margin:0 auto;padding:0 18px 80px}
+  .hidden{display:none !important}
+
+  /* ---------- Header ---------- */
+  header.top{
+    position:sticky;top:0;z-index:50;
+    background:rgba(11,15,22,.94);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  .topin{max-width:1080px;margin:0 auto;padding:10px 18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .brand{font-weight:700;font-size:15px;letter-spacing:.2px}
+  .brand span{color:var(--accent)}
+  .sub{font-size:12px;color:var(--muted2)}
+  .spacer{flex:1}
+  .stat{
+    background:var(--panel);border:1px solid var(--line);border-radius:8px;
+    padding:5px 10px;font-size:12px;color:var(--muted);white-space:nowrap
+  }
+  .stat b{color:var(--txt);font-variant-numeric:tabular-nums}
+  #timer{font-family:var(--mono);font-size:15px;color:var(--txt);letter-spacing:.5px}
+
+  .bar{height:4px;background:var(--line)}
+  .bar>i{display:block;height:100%;width:0;background:var(--accent);transition:width .2s}
+
+  /* ---------- Buttons / tabs ---------- */
+  .tabs{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0 6px}
+  .tab{
+    background:var(--panel);border:1px solid var(--line);color:var(--muted);
+    padding:8px 14px;border-radius:8px;cursor:pointer;font-size:14px;font-weight:600;font-family:inherit;text-align:left
+  }
+  .tab:hover{border-color:var(--line2);color:var(--txt)}
+  .tab.on{background:var(--accent2);border-color:var(--accent);color:#fff}
+  .tab .mini{display:block;font-size:11px;font-weight:500;opacity:.85;letter-spacing:.3px}
+
+  /* ---------- Palette ---------- */
+  .palette{
+    background:var(--panel);border:1px solid var(--line);border-radius:10px;
+    padding:12px;margin:14px 0 20px;
+  }
+  .palette .plabel{font-size:11px;text-transform:uppercase;letter-spacing:.9px;color:var(--muted2);margin-bottom:8px}
+  .chips{display:flex;flex-wrap:wrap;gap:6px}
+  .chip{
+    width:46px;height:32px;border-radius:6px;border:1px solid var(--line);
+    background:var(--bg2);color:var(--muted2);font-size:12px;font-family:var(--mono);
+    cursor:pointer;display:flex;align-items:center;justify-content:center
+  }
+  .chip:hover{border-color:var(--line2);color:var(--txt)}
+  .chip.answered{background:var(--accent2);border-color:var(--accent);color:#fff;font-weight:700}
+  .chip.cur{outline:2px solid var(--warn);outline-offset:1px}
+
+  /* ---------- Question card ---------- */
+  .q{
+    background:var(--panel);border:1px solid var(--line);border-radius:12px;
+    padding:20px 22px;margin-bottom:18px;
+  }
+  .qhead{display:flex;align-items:baseline;gap:10px;margin-bottom:4px;flex-wrap:wrap}
+  .qid{font-family:var(--mono);font-size:15px;font-weight:700;color:var(--accent)}
+  .qtopic{font-size:11px;text-transform:uppercase;letter-spacing:.8px;color:var(--muted2)}
+  .qstem{margin:10px 0 14px;color:#e6ecf7}
+  pre{
+    background:#0a0e15;border:1px solid var(--line);border-radius:8px;
+    padding:13px 15px;overflow-x:auto;font-family:var(--mono);font-size:13.5px;
+    line-height:1.55;color:#c8d6ef;margin:0 0 14px
+  }
+  code{font-family:var(--mono);font-size:.92em;background:#0a0e15;border:1px solid var(--line);
+       border-radius:5px;padding:1px 5px;color:#b9c8e6;white-space:normal}
+  pre code{background:none;border:none;padding:0;color:inherit;font-size:inherit}
+
+  .opts{display:flex;flex-direction:column;gap:9px}
+  .opt{
+    display:flex;gap:12px;align-items:flex-start;
+    background:var(--bg2);border:1px solid var(--line);border-radius:9px;
+    padding:11px 14px;cursor:pointer
+  }
+  .opt:hover{border-color:var(--line2)}
+  .opt input{margin-top:5px;accent-color:var(--accent);width:16px;height:16px;flex:0 0 auto}
+  .opt .k{
+    font-family:var(--mono);font-weight:700;color:var(--muted);flex:0 0 20px;font-size:14px;padding-top:1px
+  }
+  .opt .t{flex:1}
+  .opt.sel{border-color:var(--accent);background:#152340}
+  .opt.sel .k{color:var(--accent)}
+  .opt.locked{cursor:default}
+
+  /* ---------- Results ---------- */
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin:18px 0}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+  .card .lbl{font-size:11px;text-transform:uppercase;letter-spacing:.9px;color:var(--muted2)}
+  .card .val{font-size:30px;font-weight:800;line-height:1.25;font-variant-numeric:tabular-nums}
+  .card .val small{font-size:15px;font-weight:600;color:var(--muted)}
+  .card .note{font-size:12px;color:var(--muted)}
+  .card.hi .val{color:var(--ok)}
+  .card.mid .val{color:var(--warn)}
+  .card.lo .val{color:var(--bad)}
+
+  h2.sec{margin:30px 0 10px;font-size:18px;letter-spacing:.2px}
+  h3.sub2{margin:22px 0 8px;font-size:14px;text-transform:uppercase;letter-spacing:.9px;color:var(--muted2)}
+
+  .theme{margin-bottom:11px}
+  .theme .row{display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px}
+  .theme .row .n{color:var(--muted)}
+  .theme .row .s{color:var(--muted);font-variant-numeric:tabular-nums}
+  .tbar{height:8px;background:var(--line);border-radius:5px;overflow:hidden}
+  .tbar>i{display:block;height:100%;background:var(--ok)}
+  .tbar.mid>i{background:var(--warn)}
+  .tbar.lo>i{background:var(--bad)}
+
+  .prio{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:6px 18px 14px}
+  .prio ol{margin:10px 0 0;padding-left:20px}
+  .prio li{margin-bottom:8px;color:#dbe4f3}
+  .prio .tag{
+    display:inline-block;font-family:var(--mono);font-size:11px;background:var(--badbg);
+    color:#ff9b9b;border:1px solid #55282d;border-radius:5px;padding:1px 6px;margin-right:6px
+  }
+
+  .verdict{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--accent);
+           border-radius:10px;padding:14px 18px;margin:16px 0 6px;color:#d5deee}
+  .verdict b{color:#fff}
+
+  /* result question blocks */
+  .rq{
+    background:var(--panel);border:1px solid var(--line);border-radius:12px;
+    padding:16px 18px;margin-bottom:14px;border-left-width:4px;border-left-style:solid
+  }
+  .rq.ok{border-left-color:var(--ok)}
+  .rq.no{border-left-color:var(--bad)}
+  .rq.sk{border-left-color:var(--muted2);border-left-style:dashed}
+  .rq .qstem{font-size:15px;margin:6px 0 10px}
+  .ropts{display:flex;flex-direction:column;gap:7px;margin-top:4px}
+  .ropt{
+    display:flex;gap:10px;align-items:flex-start;border-radius:8px;padding:8px 12px;
+    border:1px solid var(--line);background:var(--bg2);font-size:14.5px
+  }
+  .ropt .k{font-family:var(--mono);font-weight:700;color:var(--muted);flex:0 0 20px}
+  .ropt.correct{border-color:var(--ok);background:var(--okbg)}
+  .ropt.correct .k{color:var(--ok)}
+  .ropt.wrongpick{border-color:var(--bad);background:var(--badbg)}
+  .ropt.wrongpick .k{color:var(--bad)}
+  .ropt .flag{margin-left:auto;font-size:11px;text-transform:uppercase;letter-spacing:.7px;white-space:nowrap;align-self:center}
+  .ropt.correct .flag{color:var(--ok)}
+  .ropt.wrongpick .flag{color:var(--bad)}
+  .rexpl{margin-top:11px;padding-top:11px;border-top:1px dashed var(--line);font-size:14px;color:#b9c6dc}
+  .rexpl b{color:#e7eefb}
+  .badge{
+    font-family:var(--mono);font-size:11px;border-radius:5px;padding:1px 7px;border:1px solid var(--line);
+    color:var(--muted);margin-left:auto
+  }
+  .rq.ok .badge{color:var(--ok);border-color:#1d5c3f;background:var(--okbg)}
+  .rq.no .badge{color:var(--bad);border-color:#5a2a2f;background:var(--badbg)}
+
+  /* ---------- Start screen ---------- */
+  .hero{
+    background:linear-gradient(160deg,#141d2e 0%,#0e1420 60%);
+    border:1px solid var(--line);border-radius:16px;padding:32px;margin-top:28px
+  }
+  .hero h1{margin:0 0 6px;font-size:26px;line-height:1.3}
+  .hero p.lead{color:var(--muted);margin:0 0 20px}
+  .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin:18px 0}
+  .mini{background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:14px 16px}
+  .mini .t{font-weight:700;font-size:14px;margin-bottom:3px}
+  .mini .d{font-size:12.5px;color:var(--muted)}
+  .pill{
+    display:inline-block;font-family:var(--mono);font-size:11px;border:1px solid var(--line2);
+    color:var(--muted);border-radius:999px;padding:2px 9px;margin-bottom:6px
+  }
+  ul.rules{margin:6px 0 20px;padding-left:20px;color:var(--muted);font-size:14.5px}
+  ul.rules li{margin-bottom:5px}
+  .cta{
+    background:var(--accent);border:none;color:#fff;font-family:inherit;font-weight:700;
+    font-size:15px;padding:12px 26px;border-radius:9px;cursor:pointer
+  }
+  .cta:hover{background:#5f99ff}
+  .cta.ghost{background:transparent;border:1px solid var(--line2);color:var(--txt)}
+  .cta.ghost:hover{border-color:var(--muted)}
+  .cta.danger{background:transparent;border:1px solid #5a2a2f;color:#ff9b9b}
+  .cta.danger:hover{background:var(--badbg)}
+  .btnrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+  .foot{color:var(--muted2);font-size:12px;text-align:center;margin-top:34px}
+
+  /* ---------- Site nav bar ---------- */
+  .sitenav{
+    display:flex;align-items:center;justify-content:space-between;gap:14px;
+    background:#0e1522;border-bottom:1px solid var(--line);padding:11px 18px;
+    position:sticky;top:0;z-index:60;flex-wrap:wrap
+  }
+  .sitebrand{display:flex;align-items:center;gap:10px;color:var(--txt);text-decoration:none;font-weight:700;font-size:14.5px}
+  .sitebrand:hover{color:var(--accent)}
+  .logo{width:26px;height:26px;position:relative;flex:0 0 auto}
+  .logo i{position:absolute;width:10px;height:10px;border-radius:3px;background:#4f8cff}
+  .logo i:nth-child(1){left:0;top:9px;background:#86b5ff}
+  .logo i:nth-child(2){left:8px;top:4px}
+  .logo i:nth-child(3){left:16px;top:0;background:#2b64df}
+  .siteback{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .mocktag{font-size:12px;color:var(--muted2);border:1px solid var(--line);border-radius:999px;padding:3px 10px}
+  .vis{font-size:12px;color:var(--muted2)}
+  .vis b{color:var(--txt);font-variant-numeric:tabular-nums;font-weight:700}
+  .btn-back{
+    border:1px solid var(--line2);color:var(--txt);text-decoration:none;font-size:13px;font-weight:600;
+    padding:6px 13px;border-radius:8px;white-space:nowrap
+  }
+  .btn-back:hover{border-color:var(--accent);color:var(--accent)}
+  .stat #visCount{color:var(--txt);font-variant-numeric:tabular-nums}
+
+  @media (max-width:640px){
+    .wrap{padding:0 12px 60px}
+    .hero{padding:22px 18px}
+    .hero h1{font-size:21px}
+    .q{padding:16px 14px}
+    .topin{gap:8px;padding:9px 12px}
+    .stat{font-size:11px;padding:4px 8px}
+    .chip{width:42px;height:30px;font-size:11px}
+    pre{font-size:12.5px}
+  }
+</style>
+</head>
+<body>
+
+<!-- ===================== SITE NAV ===================== -->
+<nav class="sitenav">
+  <a class="sitebrand" href="/" title="Back to Cognitive Game Lab">
+    <span class="logo"><i></i><i></i><i></i></span>
+    <span>Cognitive Game Lab</span>
+  </a>
+  <span class="mocktag">Mock 3 &middot; Core CS only</span>
+  <div class="siteback">
+    <span class="vis"><b id="visCount">&mdash;</b> visitors</span>
+    <a class="btn-back" href="/mock-1">Mock 1 &rarr;</a>
+    <a class="btn-back" href="/mock-2">Mock 2 &rarr;</a>
+    <a class="btn-back" href="/">&larr; Games</a>
+  </div>
+</nav>
+
+<!-- ===================== START SCREEN ===================== -->
+<div id="startScreen" class="wrap">
+  <div class="hero">
+    <h1>Core CS Concepts</h1>
+    <p class="lead">Capgemini Exceller 2027 &mdash; Dedicated Core Computer Science Mock &middot; 40 questions &middot; Four topics &middot; Single-best-answer</p>
+
+    <div class="grid2" id="startCards"></div>
+
+    <ul class="rules">
+      <li>One correct option per question. Exactly four options: A, B, C, D.</li>
+      <li>Answers can be changed at any time before you submit.</li>
+      <li>You may switch between topics and leave questions unanswered.</li>
+      <li>Unanswered questions are scored as incorrect.</li>
+      <li>The timer starts when you begin and stops when you submit.</li>
+      <li>Correct answers and explanations are revealed only after submission.</li>
+      <li>All answers stay in memory for this page session and are cleared on reset.</li>
+    </ul>
+
+    <button class="cta" id="beginBtn">Begin assessment</button>
+    <span style="margin-left:12px;color:var(--muted2);font-size:13px">Suggested time: 60&ndash;75 minutes</span>
+  </div>
+  <p class="foot">Runs entirely offline in your browser. Nothing is uploaded, stored or transmitted.</p>
+</div>
+
+<!-- ===================== TEST SCREEN ===================== -->
+<div id="testScreen" class="hidden">
+  <header class="top">
+    <div class="topin">
+      <div>
+        <div class="brand">Exceller <span>2027</span></div>
+        <div class="sub">Core CS Concepts Mock</div>
+      </div>
+      <div class="spacer"></div>
+      <div class="stat">Answered <b id="sAns">0</b>/<b id="sTot">40</b></div>
+      <div class="stat">Left <b id="sLeft">40</b></div>
+      <div class="stat" id="timer">00:00:00</div>
+    </div>
+    <div class="bar"><i id="prog"></i></div>
+  </header>
+
+  <div class="wrap">
+    <div class="tabs" id="secTabs"></div>
+
+    <div class="palette">
+      <div class="plabel">Question navigator &mdash; click to jump</div>
+      <div class="chips" id="chips"></div>
+    </div>
+
+    <div id="secHosts"></div>
+
+    <div class="btnrow" style="margin:24px 0 10px">
+      <button class="cta" id="submitBtn">Submit assessment</button>
+      <button class="cta ghost" id="clearBtn">Clear this topic</button>
+    </div>
+    <p class="sub">Submission is final. You will see your score, per-topic results, topic analysis and explanations for every question.</p>
+  </div>
+</div>
+
+<!-- ===================== RESULT SCREEN ===================== -->
+<div id="resultScreen" class="hidden">
+  <header class="top">
+    <div class="topin">
+      <div>
+        <div class="brand">Exceller <span>2027</span> &mdash; Results</div>
+        <div class="sub" id="resMeta">Assessment complete</div>
+      </div>
+      <div class="spacer"></div>
+      <div class="stat">Time used <b id="resTime">00:00:00</b></div>
+      <button class="cta ghost" id="resetBtn" style="padding:7px 16px;font-size:13px">Reset</button>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <div class="cards" id="scoreCards"></div>
+    <div class="verdict" id="verdict"></div>
+
+    <div class="tabs" id="resTabs"></div>
+
+    <div id="resHosts"></div>
+
+    <div class="btnrow" style="margin:30px 0 10px">
+      <button class="cta ghost" id="backBtn">Back to first topic</button>
+    </div>
+  </div>
+</div>
+
+<script>
+"use strict";
+
+/* ==========================================================================
+   TOPIC REGISTRY
+   The four CORE CS topics. Every question carries a matching section id.
+   ========================================================================== */
+var SECTIONS = [
+  {id:"A", label:"Programming Logic &amp; Problem Solving", short:"Logic &amp; Problem Solving",
+   range:"Q01&ndash;Q10",
+   desc:"Variables, data types, I/O logic, pseudocode tracing and output prediction."},
+  {id:"B", label:"Data Structures &amp; Algorithms", short:"Data Structures &amp; Algorithms",
+   range:"Q11&ndash;Q20",
+   desc:"Arrays, strings, hashing, searching, sorting and time/space complexity."},
+  {id:"C", label:"Software Engineering Fundamentals", short:"Software Engineering",
+   range:"Q21&ndash;Q30",
+   desc:"OOP, DBMS, SQL, REST APIs, HTTP methods and Git basics."},
+  {id:"D", label:"Modern Engineering Awareness", short:"Modern Engineering",
+   range:"Q31&ndash;Q40",
+   desc:"Client&ndash;server, cloud, API keys vs tokens, networking, cybersecurity, Agile, DevOps and Docker."}
+];
+var ANALYSIS_ID = "X";
+SECTIONS.forEach(function(s){ s.count = 0; });
+
+/* ==========================================================================
+   QUESTION BANK
+   answer = index (0-based) of the single correct option
+   ========================================================================== */
+var LETTERS = ["A","B","C","D"];
+
+var QUESTIONS = [
+
+/* ---------------- TOPIC 1 : PROGRAMMING LOGIC & PROBLEM SOLVING ---------------- */
+{
+  id:"Q01", section:"A", theme:"Programming Logic", topic:"Integer division and compound assignment",
+  code:`int a = 7, b = 2;
+double d = a / b;
+int c = a / b;
+c += 1.9;
+System.out.println(d + " " + c);`,
+  stem:`The following is valid Java. What exactly does it print?`,
+  options:[
+    `3.0 4`,
+    `3.5 4`,
+    `3.0 3.9`,
+    `4.9 4`
+  ],
+  answer:0,
+  explanation:`Both operands of a / b are int, so integer division happens first and yields 3. Assigning that to double converts the already-computed integer 3 into 3.0; it does not retroactively make the division floating point. So d is 3.0. For c, the expression a / b is again integer division, giving 3, and int c = a / b stores 3. The compound assignment c += 1.9 evaluates c + 1.9 in double as 4.9 and then implicitly narrows the result back to int, truncating toward zero, so c becomes 4. Output: 3.0 4. To get 3.5 you must write (double) a / b or a / (double) b.`
+},
+{
+  id:"Q02", section:"A", theme:"Programming Logic", topic:"break, continue and nested loops",
+  code:`int c = 0;
+for (int i = 1; i <= 3; i++){
+  for (int j = 1; j <= 3; j++){
+    if (j == 2) continue;
+    if (i == 2) break;
+    c++;
+  }
+}
+System.out.println(c);`,
+  stem:`What does this print?`,
+  options:[
+    `4`,
+    `6`,
+    `3`,
+    `9`
+  ],
+  answer:0,
+  explanation:`For i = 1 the inner loop runs j = 1 (c becomes 1), j = 2 (continue, skipped), j = 3 (c becomes 2). For i = 2 the first iteration j = 1 passes the continue check, then i == 2 fires break, so the inner loop exits immediately and c is unchanged at 2. For i = 3 the pattern repeats, adding 2 more. Total c = 4. Note that break leaves the inner loop only, so the outer loop still runs i = 3. Getting 6 means ignoring the i == 2 break; getting 9 means ignoring both break and continue; getting 3 means counting only one increment per outer iteration.`
+},
+{
+  id:"Q03", section:"A", theme:"Programming Logic", topic:"Redeclaration and block scope",
+  code:`public class Main {
+  public static void main(String[] args){
+    int x = 10;
+    {
+      int x = 20;
+      System.out.print(x + " ");
+    }
+    System.out.println(x);
+  }
+}`,
+  stem:`A candidate claims this program prints "20 10" because the inner block has its own scope. What actually happens?`,
+  options:[
+    `It prints 20 10, because the inner x shadows the outer one only inside the block.`,
+    `It prints 10 10, because the inner declaration is silently ignored.`,
+    `It fails to compile: local variable x is already defined in this scope.`,
+    `It prints 20 20, because assignments mutate a single shared variable.`
+  ],
+  answer:2,
+  explanation:`Java forbids shadowing a local variable in a nested block of the same method. The inner int x is in the scope of the outer x, so the compiler rejects the program with "variable x is already defined in this scope" before any code runs. Shadowing a local is illegal in Java; shadowing a field, a parameter or a loop variable from an enclosing method is legal and does print 20 10. Since there is no output at all, any option describing printed values is wrong.`
+},
+{
+  id:"Q04", section:"A", theme:"Pseudocode Tracing", topic:"Modular rotation of an array",
+  code:`procedure rotate(A, n, k)
+  k  <-  k mod n
+  B  <-  new array of size n
+  for i <- 0 to n - 1
+    B[(i + k) mod n]  <-  A[i]
+  A  <-  B
+
+A = [1, 2, 3, 4, 5, 6]
+rotate(A, 6, 2)
+print A`,
+  stem:`The pseudocode above is a correct right rotation. After the call, what does A contain?`,
+  options:[
+    `[5, 6, 1, 2, 3, 4]`,
+    `[1, 2, 3, 4, 5, 6]`,
+    `[3, 4, 5, 6, 1, 2]`,
+    `[2, 3, 4, 5, 6, 1]`
+  ],
+  answer:0,
+  explanation:`Each element moves to a higher index by k, so the array shifts right and the last k elements wrap to the front. Placing index 2 in front means the final two entries 5 and 6 come first. Step by step: B[2]=1, B[3]=2, B[4]=3, B[5]=4, B[0]=5, B[1]=6. Reading B in index order gives [5, 6, 1, 2, 3, 4]. Option C is a left rotation by 2 and option D is a right rotation by 1. Note also that the final statement A <- B is what makes the change visible to the caller; without a reference-returning or in-place variant, the caller's A would still hold the original array.`
+},
+{
+  id:"Q05", section:"A", theme:"Programming Logic", topic:"Reference equality versus content equality",
+  code:`String a = new String("code");
+String b = new String("code");
+String c = "code";
+String d = c;
+System.out.println((a == b) + " " + (a == c) + " " + (c == d) + " " + (a.equals(b)));`,
+  stem:`What exactly does this print?`,
+  options:[
+    `true true true true`,
+    `false false true true`,
+    `false false false false`,
+    `true false true true`
+  ],
+  answer:1,
+  explanation:`== on references compares identity, not content. a and b are two distinct objects created by two separate new String calls, so a == b is false, and c is a third object in the string pool, so a == c is false. d = c copies the reference, so c == d is true. equals() compares character content, and a and b both hold "code", so a.equals(b) is true. Output: false false true true. In application code always use equals() for string comparison; the only safe use of == on strings is a null check.`
+},
+{
+  id:"Q06", section:"A", theme:"Programming Logic", topic:"char arithmetic and narrowing",
+  code:`char ch = 'B';
+System.out.println(ch + 1);
+System.out.println((char)(ch + 1));
+System.out.println((int)'A');`,
+  stem:`What does this print? (three lines)`,
+  options:[
+    `66 then C then 67`,
+    `67 then C then 65`,
+    `B1 then C then A`,
+    `67 then 68 then 65`
+  ],
+  answer:1,
+  explanation:`A char value participates in binary numeric promotion when combined with an int, so ch + 1 is evaluated as int 66 + 1 = 67 and prints 67. Casting that int back to char gives the character with code 67, which is C. Finally (int)'A' widens the char A to its Unicode code point 65. Option A swaps the values around the plus one, option C treats char as a string concatenation and is wrong because char + int is numeric promotion, not string concatenation (that only happens when one side is a String), and option D adds one twice.`
+},
+{
+  id:"Q07", section:"A", theme:"Input & Output", topic:"Scanner token boundary bug",
+  code:`Scanner sc = new Scanner(System.in);
+int roll  = sc.nextInt();
+String name = sc.nextLine();
+String city = sc.nextLine();
+System.out.println(name + "|" + city);`,
+  stem:`The user types exactly this, with Enter after each line: 42, then Anita, then Pune. What does the program print?`,
+  options:[
+    `|Anita`,
+    `Anita|Pune`,
+    `It throws InputMismatchException.`,
+    `Anita|Anita`
+  ],
+  answer:0,
+  explanation:`nextInt() parses the digits 42 and stops at the newline, but it does not consume that newline character. The first nextLine() therefore finds the remainder of the current line, which is just the leftover line terminator, and returns an empty string. The second nextLine() then consumes the whole of the next line, which is Anita. Pune is never read. Output: |Anita. The standard fix is either to read all input with nextLine() and parse it with Integer.parseInt, or to call sc.nextLine() once immediately after nextInt() to flush the leftover newline. InputMismatchException only happens when nextInt() itself cannot parse a number.`
+},
+{
+  id:"Q08", section:"A", theme:"Programming Logic", topic:"Short-circuit evaluation",
+  code:`int x = 0;
+boolean r = (x != 0) && (10 / x > 1);
+boolean s = (x == 0) || (10 / x > 1);
+System.out.println(r + " " + s);`,
+  stem:`What does this print?`,
+  options:[
+    `false true`,
+    `false false`,
+    `ArithmeticException: divide by zero`,
+    `true false`
+  ],
+  answer:0,
+  explanation:`Both && and || short-circuit. For r, the left operand x != 0 is false, so the right operand is never evaluated and no division happens; r is false. For s, the left operand x == 0 is true, so the right operand is again skipped and s is true. Because short-circuiting prevents the division in both cases, no ArithmeticException is raised. If the operands had been written as (x == 0) & (10 / x > 1) with the non-short-circuit bitwise operator, the right side would always be evaluated and the program would crash. Output: false true.`
+},
+{
+  id:"Q09", section:"A", theme:"Recursion", topic:"Recursive return-value trace",
+  code:`int f(int n){
+  if (n <= 1) return 1;
+  return n * f(n - 1) + (n - 2);
+}
+System.out.println(f(4));`,
+  stem:`What does this print?`,
+  options:[
+    `30`,
+    `24`,
+    `28`,
+    `35`
+  ],
+  answer:0,
+  explanation:`Evaluate outward-in from the base case. f(1) = 1. f(2) = 2 * f(1) + 0 = 2. f(3) = 3 * f(2) + 1 = 6 + 1 = 7. f(4) = 4 * f(3) + 2 = 28 + 2 = 30. Output: 30. Option B, 24, is plain 4!, which is the trap here because this function is not factorial: the extra (n - 2) term breaks the multiplicative pattern. Trace the recursion by writing the call stack values bottom-up instead of trying to spot a pattern from the outside.`
+},
+{
+  id:"Q10", section:"A", theme:"Programming Logic", topic:"Bit shifts and 32-bit overflow",
+  code:`int x = 1;
+for (int i = 0; i < 31; i++){
+  x = x << 1;
+}
+System.out.println(Integer.MIN_VALUE);
+System.out.println(x);`,
+  stem:`What does this print? (two lines)`,
+  options:[
+    `-2147483648 then 2147483648`,
+    `-2147483648 then -2147483648`,
+    `2147483647 then 2147483648`,
+    `1073741824 then 1073741824`
+  ],
+  answer:1,
+  explanation:`An int is a signed 32-bit value, so the only representable outcomes after a left shift are within [-2147483648, 2147483647]. Starting from 1 and shifting left 31 times gives the mathematical value 2^31 = 2147483648, which is out of range for int, so the two's complement bits simply become 1000...0, i.e. Integer.MIN_VALUE = -2147483648. Both print calls therefore output -2147483648. There is no exception, because integer overflow wraps silently in Java. If you need the value 2^31, use a long: 1L << 31 gives 2147483648.`
+},
+
+/* ---------------- TOPIC 2 : DATA STRUCTURES & ALGORITHMS ---------------- */
+{
+  id:"Q11", section:"B", theme:"Data Structures", topic:"Pair search on an unsorted array",
+  stem:`You must report whether any two distinct elements of an UNSORTED array of n integers sum to a given target K. Which approach meets the best time bound, and what does it cost in space?`,
+  options:[
+    `Scan once, inserting each seen value into a hash set and checking whether K minus the current value is already present: O(n) average time and O(n) extra space.`,
+    `Use two pointers, one at each end, moving inward: O(n) time and O(1) space.`,
+    `Sort the array, then use two pointers from the ends: O(n log n) time and O(1) extra space.`,
+    `Check every pair with two nested loops: O(n) time and O(1) space.`
+  ],
+  answer:0,
+  explanation:`A hash set lets each element be checked against all previously seen elements in constant expected time, so one pass gives O(n) average time at the cost of O(n) memory. Option B, two pointers from the ends, is the classic optimal solution but it is only valid on a sorted array, because it relies on the ordering to decide which pointer to move; on unsorted input it silently misses pairs. Option C works but pays O(n log n) for the sort, which is strictly worse than O(n) average and also needs O(n) in-place sort scratch space. Option D is O(n^2), not O(n).`
+},
+{
+  id:"Q12", section:"B", theme:"Hashing", topic:"Mutating a key after insertion",
+  code:`StringBuilder sb = new StringBuilder("ab");
+HashMap<StringBuilder, Integer> m = new HashMap<>();
+m.put(sb, 10);
+sb.append("cd");
+System.out.println(m.get(new StringBuilder("abcd")));`,
+  stem:`What is printed, and why?`,
+  options:[
+    `10, because the new key has the same characters.`,
+    `null, because mutating sb changed the hashCode it was stored under.`,
+    `10, because HashMap falls back to equals when hash codes differ.`,
+    `A ClassCastException.`
+  ],
+  answer:1,
+  explanation:`A HashMap finds an entry by computing the key's hashCode, jumping straight to that bucket, and only then comparing with equals. sb was stored in the bucket for the hash of "ab", but appending "cd" changes its hashCode to that of "abcd". The lookup for a key hashing to "abcd" therefore lands in a different, empty bucket and returns null, even though the characters match. This is exactly why String is safe as a HashMap key and mutable objects such as StringBuilder, arrays and mutable key fields are not. If you need a mutable-content key, use a String or an immutable wrapper with a well-defined hashCode and equals.`
+},
+{
+  id:"Q13", section:"B", theme:"Searching", topic:"Overflow in the binary search midpoint",
+  code:`int[] arr = new int[2_000_000_000];
+int low = 0, high = arr.length - 1;
+while (low <= high){
+  int mid = (low + high) / 2;
+  if (arr[mid] == target) return mid;
+  else if (arr[mid] < target) low = mid + 1;
+  else high = mid - 1;
+}
+return -1;`,
+  stem:`The array is sorted and target is somewhere in the middle, so the loop does run many iterations. What goes wrong, and what is the fix?`,
+  options:[
+    `Nothing. (low + high) / 2 is always correct for an array this size.`,
+    `Once low and high are both large, (low + high) overflows int to a negative number, mid becomes negative, and the code throws ArrayIndexOutOfBoundsException. Compute mid as low + (high - low) / 2.`,
+    `The loop runs forever because mid stops changing once overflow occurs.`,
+    `It throws OutOfMemoryError because the array cannot be allocated, so the fix is to use a smaller primitive type.`
+  ],
+  answer:1,
+  explanation:`low + high can reach nearly 2 billion, which is larger than Integer.MAX_VALUE of 2147483647. The int sum wraps around to a negative value, and dividing a negative by 2 stays negative, so mid becomes a negative index and arr[mid] throws ArrayIndexOutOfBoundsException. The overflow-safe midpoint is low + (high - low) / 2, because high - low is never negative and never exceeds the array length, so the result always fits in an int. This is the standard defensive form used in real binary search implementations; the same idea appears in midpoint calculations in geometry code.`
+},
+{
+  id:"Q14", section:"B", theme:"Sorting", topic:"Stable versus unstable sort",
+  stem:`You must print employees grouped by department, and within each department the employees must appear in their original hire-date order. Which property of the sort algorithm is actually required?`,
+  options:[
+    `Stability: equal keys must keep their relative input order.`,
+    `In-place operation, so the sort does not allocate a second array.`,
+    `Better than O(n log n) worst-case time.`,
+    `Being a comparison sort, so it works for any comparable key type.`
+  ],
+  answer:0,
+  explanation:`Only stability guarantees that within a department the hire-date order is preserved. Sorting on department alone with an unstable algorithm such as quicksort or heapsort may arbitrarily permute the employees inside a department, so the output is wrong even though the grouping looks right. In Java, Collections.sort and List.sort are guaranteed stable because they delegate to merge sort, and Arrays.sort on an object array is TimSort and also stable; Arrays.sort on a primitive array is a dual-pivot quicksort and is not, which matters when you sort a record by several keys in successive passes. The practical pattern is: to sort by a secondary key, either make the comparator include it, or sort stably by the secondary key first and then by the primary key.`
+},
+{
+  id:"Q15", section:"B", theme:"Data Structures", topic:"Choosing stack, queue or deque",
+  stem:`Match each requirement to the correct structure: (1) Ctrl+Z must undo the most recent action first; (2) a print spooler must output documents strictly in the order they were submitted; (3) the server must serve requests in fair arrival order, and (4) a producer keeps adding work while consumers take from the same end. Which set is right?`,
+  options:[
+    `LIFO stack for undo, FIFO queue for the print spooler, FIFO queue for fair request order, and a deque used as a queue for the producer-consumer case.`,
+    `FIFO queue for undo, LIFO stack for the print spooler, LIFO stack for request order, and a LIFO stack for producer-consumer.`,
+    `All four need a LIFO stack, because LIFO is the fastest of the three.`,
+    `All four need a FIFO queue, because FIFO guarantees fairness everywhere.`
+  ],
+  answer:0,
+  explanation:`Requirement 1 is inherently last-in-first-out: the most recent action must be reversed first, so a stack. Requirements 2 and 3 are explicitly order-preserving, which means first-in-first-out, so a queue. Requirement 4 is the classic producer-consumer pattern, where a bounded queue (often exposed as a ConcurrentLinkedQueue or ArrayDeque) decouples producers from consumers; nothing about it needs LIFO ordering. Choosing by access order rather than by raw speed is the habit being tested here, since a deque can emulate either behaviour depending on which end you push and pop.`
+},
+{
+  id:"Q16", section:"B", theme:"Complexity", topic:"Quicksort worst case and pivot choice",
+  stem:`A quicksort implementation takes the first element as pivot. It runs in 0.4 seconds on random input but takes 9 seconds on data that is already sorted ascending, which is how the nightly batch feeds it. Which change fixes the worst case without changing the sort's contract?`,
+  options:[
+    `Randomise the pivot (or use median-of-three, or switch to introsort) so the split stays near-even regardless of input order.`,
+    `Replace the recursive quicksort with three nested loops that compare every pair of elements.`,
+    `Insert a small sleep between iterations so the scheduler interleaves the loop body.`,
+    `Convert the input to a double array first, because integer keys sort more slowly than floating point keys.`
+  ],
+  answer:0,
+  explanation:`With the first element as pivot on already-sorted input, every partition is maximally unbalanced: the pivot is always the smallest remaining element, so each level of recursion peels off exactly one element and the tree degenerates into a list. That gives O(n^2) comparisons against O(n log n) average, a 20x-plus gap for large n, which is what you observed. Randomising or median-of-three pivoting restores the O(n log n) expected behaviour for essentially every input, and introsort adds a depth limit that falls back to heapsort so the worst case is bounded at O(n log n) time and O(n) space. Nothing about the data type or the machine is the problem.`
+},
+{
+  id:"Q17", section:"B", theme:"Strings", topic:"Cost of repeated string concatenation",
+  stem:`A log formatter builds its output in a loop and takes 8 seconds for 100,000 lines: String r = ""; for (int i = 0; i < 100000; i++){ r += i + ","; }. What is the real cause, and the fix?`,
+  options:[
+    `The concatenation is O(n^2) because each += creates a new string and copies all existing characters. Use a StringBuilder and call toString() once at the end.`,
+    `The loop is O(n) but the JVM's garbage collector is thrashing. Increase the heap and leave the code unchanged.`,
+    `The "," literal is boxed on every iteration. Declare it as a static final String to make it O(1).`,
+    `System.out is slow. Accumulate into an array and print with a single formatted write.`
+  ],
+  answer:0,
+  explanation:`Java strings are immutable, so r += x does not modify r; it allocates a brand new string holding r plus x and copies every character already in r. Across n iterations the total number of character copies is 1 + 2 + ... + n, which is O(n^2). At 100,000 short lines that is billions of character copies, which is where the 8 seconds goes. StringBuilder keeps a mutable char array and appends in amortised O(1), making the whole loop O(n); call toString() once at the end. String literals are already interned, so the "," literal is not the issue, and printing speed is irrelevant compared with the copying.`
+},
+{
+  id:"Q18", section:"B", theme:"Arrays", topic:"Direct-address counting versus hashing",
+  stem:`You must count the frequency of each value in a stream of integers where every value is guaranteed to be between 0 and 10000 inclusive. Which structure is the better fit and why?`,
+  options:[
+    `A fixed int array of size 10001 used as a direct-address table: O(1) lookup, no hashing, no collision handling, and O(n) time overall.`,
+    `A HashMap<Integer, Integer>, because a map is always faster than an array.`,
+    `A hash set of all values, then sort it, then count adjacent duplicates.`,
+    `A binary search tree keyed by value, to keep the memory footprint minimal.`
+  ],
+  answer:0,
+  explanation:`When the key domain is small, dense and known in advance, a direct-address table is strictly better than a hash map: the value itself is the index, so there is no hash computation, no bucket collision, no resizing and no node allocation per entry, and you get worst-case O(1) instead of expected O(1). Hash maps only pay off when the key space is sparse or unbounded; their per-entry overhead makes them slower and more memory-hungry than a plain array here. The set-plus-sort approach is O(n log n) and discards counts during the sort grouping, and a BST gives O(log n) with heavy node overhead. The rule of thumb: bounded integer domain, use an array; arbitrary keys, use a hash map.`
+},
+{
+  id:"Q19", section:"B", theme:"Hashing", topic:"When a hash table degrades",
+  stem:`Under what condition does a hash table such as HashMap lose its expected O(1) get and put and degrade toward O(n)?`,
+  options:[
+    `When many keys collide into the same bucket, for example because the hash function is poor or all keys were given identical hashCodes, so each bucket holds a long collision chain that is scanned linearly.`,
+    `When the table contains more than a million entries, because the index array cannot grow further.`,
+    `Whenever the table is used with String keys, because String hashing is intrinsically slow.`,
+    `Only when the table is used concurrently from multiple threads.`
+  ],
+  answer:0,
+  explanation:`A hash table's expected O(1) depends on load factor staying low and on the hash function distributing keys evenly. If keys collide heavily, every operation must walk a collision chain inside one bucket, turning the cost into O(n) for that bucket; in the degenerate case where every key has the same hashCode, lookup becomes a linear scan of the whole table. HashMap in Java mitigates this by converting a bucket to a balanced tree once it reaches 8 entries, degrading to O(log n) rather than O(n). HashMap also resizes when the load factor exceeds 0.75, so growth alone is handled automatically and is not the cause.`
+},
+{
+  id:"Q20", section:"B", theme:"Data Structures", topic:"LRU cache structure choice",
+  stem:`You must implement an LRU cache with get(key) and put(key, value) both required to run in O(1) average time, evicting the least recently used entry when full. Which design achieves that, and what is the catch?`,
+  options:[
+    `A HashMap from key to node plus a doubly linked list of the same nodes for ordering: get and put are O(1) average, but you must update list links on every access and each HashMap lookup still costs O(1) average rather than worst-case O(1).`,
+    `A sorted array searched with binary search on the key, keeping the least recently used at index 0: O(log n) per access.`,
+    `A plain FIFO queue of keys: O(1) per operation, and it evicts the true least recently used entry.`,
+    `A binary heap ordered by last-access timestamp, with a hash map from key to heap index: O(log n) per access.`
+  ],
+  answer:0,
+  explanation:`O(1) get and O(1) put together require both constant-time key lookup and constant-time reordering by recency, which is why the design combines a hash map with a doubly linked list. The map gives O(1) key to node resolution; the list gives O(1) unlink and O(1) push-to-front, so moving a node on access is cheap. The costs are that every access mutates the list, the map still gives O(1) expected rather than worst-case lookup, and a node must be unlinked before eviction so the two structures do not drift apart. Options B and D are O(log n); option C is O(1) but FIFO evicts the oldest inserted key, not the least recently used one.`
+},
+
+/* ---------------- TOPIC 3 : SOFTWARE ENGINEERING FUNDAMENTALS ---------------- */
+{
+  id:"Q21", section:"C", theme:"OOP", topic:"Static binding versus dynamic dispatch",
+  code:`class A { static void show(){ System.out.print("A"); } void inst(){ System.out.print("a"); } }
+class B extends A { static void show(){ System.out.print("B"); } void inst(){ System.out.print("b"); } }
+class C extends B { static void show(){ System.out.print("C"); } void inst(){ System.out.print("c"); } }
+
+A x = new C();
+x.show();
+x.inst();`,
+  stem:`What does this print?`,
+  options:[
+    `Ac`,
+    `Cc`,
+    `AB`,
+    `It does not compile, because C inherits two versions of show.`
+  ],
+  answer:0,
+  explanation:`Static methods are bound at compile time using the declared type of the reference, which is A, so A.show() runs and prints A. Even though the object is really a C, static methods are not overridden and are not polymorphic, and each subclass version simply hides its parent's. Instance methods are bound at runtime using the object's actual type, so x.inst() dispatches to C.inst() and prints c. It compiles because a static method in a subclass that matches the signature hides rather than overrides the parent method. The practical lesson: use instance methods when you want substitutability through a base reference, and static methods only for genuinely type-level behaviour such as factories or comparators.`
+},
+{
+  id:"Q22", section:"C", theme:"OOP", topic:"Overloading versus overriding and broken polymorphism",
+  code:`class Notification {
+  public void send(Object payload){ System.out.println("generic"); }
+  public void send(String payload){ System.out.println("text"); }
+}
+class Alert extends Notification {
+  public void send(String payload){ System.out.println("alert"); }
+}
+Notification n = new Alert();
+n.send("fire");`,
+  stem:`The author intended this to dispatch dynamically to Alert.send. What is actually printed, and what is the design mistake?`,
+  options:[
+    `alert, because Alert overrides Notification.send.`,
+    `text, because Notification.send(String) is an overload chosen at compile time by the declared reference type, so Alert.send(String) merely hides it and polymorphism never engages.`,
+    `generic, because Object is the most general applicable overload.`,
+    `It does not compile, because the two methods have the same name.`
+  ],
+  answer:1,
+  explanation:`Overriding requires an identical signature: same name, same parameter types. Notification.send(String) is a different method from Notification.send(Object), so Alert.send(String) does not override it; it is an unrelated overload that hides the parent's method of the same signature. Overload resolution happens at compile time against the declared type of the reference, which is Notification, so Notification.send(String) is selected and text is printed. Alert.send(String) is never even a candidate. To get real polymorphism either drop Notification.send(String) so Alert overrides the sole send(Object), or make send generic such as <T> void send(T payload) so there is one signature to override, or expose an abstract type so the overload set is decided once at the base class.`
+},
+{
+  id:"Q23", section:"C", theme:"OOP", topic:"Encapsulation and invariant enforcement",
+  code:`class Account {
+  public double balance;
+  public void withdraw(double amt){
+    balance = balance - amt;
+  }
+}
+class Report {
+  String render(Account a){
+    a.balance = 999999;              // direct field write
+    return "Balance: " + a.balance;
+  }
+}`,
+  stem:`A test sets a.balance to 999999 directly and the resulting state is accepted with no error. Which change fixes the root cause?`,
+  options:[
+    `Make balance private, expose only a read-only getter, and validate amounts inside withdraw (and reject overdrafts there). The class, not the call sites, owns the invariant.`,
+    `Add a public void setBalance(double b) method so that call sites go through a proper setter.`,
+    `Document the field as read-only in a comment and add a lint rule to stop Report from using it.`,
+    `Move the withdrawal arithmetic out of Account and into Report, so the logic lives where it is used.`
+  ],
+  answer:0,
+  explanation:`The defect is that the object's state can be mutated without its rules being applied, so the class cannot guarantee anything about its own consistency. Encapsulation means keeping the field private and forcing every state change through methods that maintain the invariant, which puts the check in exactly one place no matter how many callers exist. A plain setter just relocates the same problem, because Report can still set 999999 through it; a comment or lint rule is a convention that nothing enforces at runtime; and moving the logic to Report is the opposite of encapsulation, since it would have to reach into Account's fields anyway. The test that proves the fix is that no assignment anywhere can produce a negative or arbitrary balance.`
+},
+{
+  id:"Q24", section:"C", theme:"SQL", topic:"Fan-out inflation from joining a one-to-many table",
+  code:`SELECT c.name, SUM(i.amount) AS revenue
+FROM customers c
+JOIN orders o        ON o.customer_id = c.id
+JOIN order_items i   ON i.order_id  = o.id
+GROUP BY c.name;`,
+  stem:`Finance reports customer revenue roughly three times higher than the order totals show. Why, and what is the correct rewrite?`,
+  options:[
+    `The order_items join multiplies each order row by its line count, so SUM double-counts orders that contain several lines. Aggregate line items to order level in a subquery first, then join that one-row-per-order result and sum it.`,
+    `SUM needs a DISTINCT on amount; writing SUM(DISTINCT i.amount) restores the true figure.`,
+    `GROUP BY c.name is wrong; grouping by c.id instead fixes the inflation.`,
+    `The JOINs must be LEFT JOINs; INNER JOIN silently duplicates rows on a many-to-many match.`
+  ],
+  answer:0,
+  explanation:`This is a fan-out problem. Joining order_items multiplies each order into one row per line item, so an order with three lines has its amount added three times and a customer with many such orders is inflated by a large factor. The fix is to collapse the one-to-many side to one row per order before it reaches the other join, for example by selecting SUM(amount) grouped by order_id in a derived table and joining that to orders. SUM(DISTINCT amount) only looks correct and is wrong whenever two genuinely different orders have the same amount. Grouping by id instead of name fixes duplicate names but not the multiplication. The general rule: never aggregate across a joined one-to-many without pre-aggregating.`
+},
+{
+  id:"Q25", section:"C", theme:"SQL", topic:"WHERE versus HAVING with aggregates",
+  code:`SELECT dept_id, COUNT(*) AS senior_count
+FROM   employee
+WHERE  salary > 50000
+GROUP  BY dept_id
+HAVING COUNT(*) > 3;`,
+  stem:`A candidate reports a SQL error saying aggregate functions are not allowed in WHERE. What is wrong and how should the intent be expressed?`,
+  options:[
+    `WHERE filters individual rows before grouping, so an aggregate there is meaningless; HAVING filters the already-formed groups and may contain COUNT(*). Use HAVING COUNT(*) > 3 as written.`,
+    `Both clauses are interchangeable; move the salary predicate to HAVING and the count to WHERE.`,
+    `WHERE cannot be used with GROUP BY at all; the filter must be in the FROM clause.`,
+    `COUNT(*) is not an aggregate, which is why it fails in WHERE.`
+  ],
+  answer:0,
+  explanation:`The SQL evaluation order is FROM, then WHERE, then GROUP BY, then HAVING, then SELECT. WHERE sees one row at a time before any grouping exists, so it cannot evaluate COUNT(*) over a group, which is exactly the error reported. HAVING is evaluated after grouping and is the only place a grouped aggregate can be filtered, so COUNT(*) > 3 belongs there. The two clauses are not interchangeable: WHERE with salary > 50000 removes low-paid rows before they are counted, so senior_count really counts senior employees, whereas putting that predicate in HAVING would count all employees per department. COUNT(*) is a standard aggregate and is exactly what HAVING is designed for.`
+},
+{
+  id:"Q26", section:"C", theme:"DBMS", topic:"Normalisation and transitive dependency",
+  code:`CREATE TABLE Orders (
+  OrderID      INT PRIMARY KEY,
+  CustomerID   INT NOT NULL,
+  CustomerName VARCHAR(80),
+  CustomerCity VARCHAR(40),
+  OrderDate    DATE
+);`,
+  stem:`The CustomerCity column is updated in three rows whenever a customer moves, and the same customer name sometimes appears spelled two ways. What is the normalisation defect and the fix?`,
+  options:[
+    `CustomerCity depends on CustomerID rather than on the primary key OrderID, which is a transitive dependency violating 3NF. Move CustomerID, CustomerName and CustomerCity into a Customers table keyed by CustomerID and reference it from Orders.`,
+    `The table is already in 1NF but not 2NF; splitting Orders into OrderHeader and OrderLines fixes the update anomaly.`,
+    `CustomerName is a repeating group, so it must be normalised to 3NF by adding an OrderNames child table.`,
+    `There is no defect; denormalising customer details onto Orders is a deliberate and safe performance trade-off.`
+  ],
+  answer:0,
+  explanation:`In 3NF every non-key attribute must depend on the key, on the whole key, and on nothing but the key. Here CustomerCity is determined by CustomerID, not by OrderID, so it depends on a non-key attribute: a transitive dependency. That is what causes the update anomaly, since one customer's city change requires updating every one of their order rows, and it also explains the inconsistent spellings, because the duplicated value can drift apart between rows. Decomposing into Customers(CustomerID PK, CustomerName, CustomerCity) and Orders(OrderID PK, CustomerID FK, OrderDate) removes the anomaly and gives one place to update. Option B mislabels this as a 2NF partial-dependency problem, which only arises with composite keys.`
+},
+{
+  id:"Q27", section:"C", theme:"DBMS", topic:"Transaction isolation and lost update",
+  code:`-- Clerk A                     -- Clerk B
+SELECT balance FROM account      SELECT balance FROM account
+WHERE id = 1;   -- reads 100     WHERE id = 1;   -- reads 100
+UPDATE account                   UPDATE account
+SET balance = 90                 SET balance = 80
+WHERE id = 1;                    WHERE id = 1;
+-- final balance: 80, a 10 debit and a 20 debit both "succeeded"`,
+  stem:`Both debits reported success but 20 rupees vanished. Which anomaly is this, and which fix actually prevents it?`,
+  options:[
+    `Lost update: both clerks read the same stale value and the second write overwrites the first. Prevent it with row locking (SELECT ... FOR UPDATE), optimistic locking via a version column, or an atomic UPDATE account SET balance = balance - 20 WHERE id = 1.`,
+    `Dirty read: a transaction read data that was later rolled back. Prevent it with READ UNCOMMITTED being replaced by READ COMMITTED.`,
+    `Non-repeatable read: the same row returned different values on a second read inside one transaction. Prevent it with SERIALIZABLE isolation.`,
+    `Phantom read: rows appeared twice in the same transaction. Prevent it with a higher isolation level or table locking.`
+  ],
+  answer:0,
+  explanation:`This is a lost update, one of the anomalies that READ COMMITTED alone does not prevent, because each statement sees a consistent snapshot but nothing stops two transactions from computing a new value from the same old one. The robust fix is to make the write atomic in the database, as in SET balance = balance - 20, or to take an explicit row lock for the read-then-write sequence, or to add a version column and reject the update when the version has moved. Dirty read means reading uncommitted data; non-repeatable read means one row changing between two reads in the same transaction; phantom read means new rows appearing. None of those match a simple stale overwrite.`
+},
+{
+  id:"Q28", section:"C", theme:"DBMS", topic:"What an index costs",
+  stem:`A dashboard query filtering orders by customer_id was timing out, so an index was added on orders(customer_id). Reads got 50 times faster and writes got noticeably slower. Why, and when is the index not worth it?`,
+  options:[
+    `Every INSERT, UPDATE and DELETE must also update the index entries, so writes pay extra CPU, extra I/O and extra locking. The index is not worth it for a small, low-churn table, for a column with very few distinct values, or when nearly every query is a full scan anyway.`,
+    `The index duplicates the whole table, so writes slow down because of doubled storage alone, regardless of how many rows change.`,
+    `Reads and writes compete for the same buffer pool cache, so the slowdown is purely a memory-capacity artefact that disappears with more RAM.`,
+    `Indexes disable the query planner's use of statistics, so writes slow down randomly and cannot be predicted.`
+  ],
+  answer:0,
+  explanation:`An index is a second, sorted copy of the selected key columns plus a pointer to the row. Any change to an indexed column, and any change to the physical location of a row, must also update the index, which means extra random I/O and extra lock contention on every write. That cost is why an index on a low-cardinality boolean or status column is nearly useless, why an index on a small table is wasteful because the planner would just scan it anyway, and why a write-heavy table with a single read query may be better off without one. Indexes are a read/write trade-off, and the right answer depends on the table's cardinality, its churn rate and the actual query mix seen in production.`
+},
+{
+  id:"Q29", section:"C", theme:"HTTP & REST", topic:"Idempotency, retries and HTTP semantics",
+  stem:`A mobile client POSTs an order, times out waiting for the response, and retries. The server creates the order twice. Which single change makes the retry safe?`,
+  options:[
+    `Accept an Idempotency-Key header on POST, store the key with its result, and return the stored response for a repeat of the same key instead of executing again.`,
+    `Switch the endpoint to GET so that the client can safely retry it.`,
+    `Change the success response from 201 Created to 200 OK so the client stops retrying.`,
+    `Make the client wait longer before retrying, and increase the server's request timeout.`
+  ],
+  answer:0,
+  explanation:`POST is defined as non-idempotent, so a retry after a timeout can legitimately duplicate the side effect, and only the server can prevent that because only it holds the state. An idempotency key is the standard solution: the client generates a unique key per logical operation, the server records the key with the outcome, and a repeat of the same key replays the stored response. GET, PUT and DELETE are specified as idempotent, but GET cannot create an order, and PUT would not fit a server-generated order id; changing the status code or raising the timeout does nothing about duplicate execution and may just delay the visible symptom.`
+},
+{
+  id:"Q30", section:"C", theme:"Git", topic:"Resolving a conflict and undoing shared commits",
+  code:`$ git merge feature/pricing
+Auto-merging src/config.js
+CONFLICT (content): Merge conflict in src/config.js
+$ git push origin main`,
+  stem:`The merge left conflict markers in src/config.js, and two unwanted commits are already pushed to the shared main branch. What is the correct recovery sequence?`,
+  options:[
+    `Open src/config.js, remove the markers and produce the correct combined content, git add it, git commit. Then undo the unwanted commits with git revert on main, which adds new commits and leaves shared history intact.`,
+    `Run git checkout --ours src/config.js and commit, then git reset --hard HEAD~2 and git push --force.`,
+    `Run git merge --abort and then git checkout --theirs src/config.js for every conflicting file.`,
+    `Delete the .git directory, re-clone the repository, and manually re-apply the feature changes.`
+  ],
+  answer:0,
+  explanation:`A merge conflict is not a mechanical decision; the correct merged content is the intersection of both intents, so you must edit src/config.js, delete the <<<<<<<, ======= and >>>>>>> markers, then git add and git commit to conclude the merge. For the unwanted commits, git revert creates new inverse commits on top, which is safe for a branch other people have already pulled. git reset --hard rewrites history and git push --force then rewrites the shared branch for everyone, destroying their work; also checkout --ours blindly discards the incoming changes. git merge --abort is only valid before the merge is committed, and abandoning .git destroys all local work.`
+},
+
+/* ---------------- TOPIC 4 : MODERN ENGINEERING AWARENESS ---------------- */
+{
+  id:"Q31", section:"D", theme:"Client-Server", topic:"Statelessness, scaling and session affinity",
+  stem:`An application sits behind a load balancer with three identical instances. Users are randomly logged out, and 504s spike for a few minutes after each deploy. Which change addresses the root cause?`,
+  options:[
+    `Externalise session state (signed client-side tokens, or a shared store such as Redis) so any instance can serve any request, and drain instances gracefully during deploys instead of killing them.`,
+    `Change the load balancer to sticky sessions so each user always reaches the same instance.`,
+    `Add more RAM to each instance and raise the request timeout.`,
+    `Scale the instance count from three to six so each user has more chance of landing on a live box.`
+  ],
+  answer:0,
+  explanation:`Both symptoms have the same root cause: state living in instance memory. If the session is held in the instance's heap, then a request routed to a different instance cannot see it, which produces the random logouts, and an instance being terminated for a deploy destroys those sessions, which produces the 504 spike. Making the application stateless with externally stored state is what allows horizontal scaling. Sticky sessions only hide the symptom until an instance is replaced or scaled, at the cost of uneven load distribution and no failover; more memory and longer timeouts do not fix lost state; more instances actually makes both problems more frequent.`
+},
+{
+  id:"Q32", section:"D", theme:"Cloud", topic:"Shared responsibility in IaaS, PaaS and SaaS",
+  code:`-- Managed relational database service:
+--   provider handles : hardware, virtualisation, OS patching,
+--                      DB engine minor-version upgrades, replication, failover
+--   customer handles : schema, data, users/roles, network rules,
+--                      backup retention policy, query tuning, capacity choices`,
+  stem:`Which service model does a managed database fit, and which statement about the split is accurate?`,
+  options:[
+    `It sits in the PaaS / managed-service layer: the provider secures and patches the infrastructure and engine, but the customer remains responsible for the data, the schema, access control and configuration.`,
+    `It is IaaS, because the customer still chooses the instance type and storage size.`,
+    `It is SaaS, because the customer never touches the underlying hardware or operating system.`,
+    `It is IaaS, and the provider has no security responsibility at all once the instance is created.`
+  ],
+  answer:0,
+  explanation:`The defining line is where the customer's responsibility ends, not how much configuration they choose. In IaaS the customer patches the guest OS and everything above it. In a managed database the provider patches the OS and the engine's minor versions and manages replication and failover, so it sits in the PaaS / managed-service band, while the customer still owns the schema, the data, the roles, the network rules and the backup policy. Choosing an instance size does not make it IaaS, and never touching the hardware does not make it SaaS, because SaaS means the customer supplies nothing but data and configuration. Getting this boundary wrong is the classic cause of a breach blamed on the cloud provider.`
+},
+{
+  id:"Q33", section:"D", theme:"API Keys & Tokens", topic:"API keys, OAuth tokens and where secrets may live",
+  stem:`A team sets a privileged third-party API key in a NEXT_PUBLIC_PAYMENTS_KEY variable, which ends up inside the client bundle, and separately stores a database OAuth access token in the backend. What is the correct arrangement?`,
+  options:[
+    `The privileged API key is a server-side secret and belongs in a secret manager or environment variable the bundler never exposes to the client; the browser should receive only a short-lived, narrowly scoped token minted by the backend after the OAuth flow. An API key identifies the calling application, an OAuth token carries delegated user authority.`,
+    `Both are fine as long as NEXT_PUBLIC_ variables are prefixed correctly, since the bundler hides their values.`,
+    `The API key should go in the client so that mobile and web share one credential, and the OAuth token can be replaced with the API key for simplicity.`,
+    `Both should be hard-coded in the source, since the repository is private and CI already runs with the same permissions.`
+  ],
+  answer:0,
+  explanation:`Anything the browser or mobile app can read, a user can read: NEXT_PUBLIC_ variables are deliberately inlined into the client bundle, so a privileged API key there is public regardless of obfuscation. The key belongs in a server-side secret manager, injected as a non-public environment variable, and the client calls your backend, which calls the third party on its behalf using the key. The OAuth access token is a different thing: it represents delegated user authority, is issued to your backend after an authorization-code flow with PKCE, is scoped and short-lived, and is refreshed rather than long-lived. A private repository is not a secret store, and git history permanently retains anything ever committed.`
+},
+{
+  id:"Q34", section:"D", theme:"Networking", topic:"TCP versus UDP and head-of-line blocking",
+  stem:`A video conferencing app sends audio, video and chat over a single reliable TCP connection. Users report that a brief packet loss freezes everyone's audio and causes video to stall. What is the correct design?`,
+  options:[
+    `Send media over UDP with an application-layer profile such as RTP that tolerates or conceals loss, and keep signalling and chat on TCP. Add jitter buffering, forward error correction and keyframe requests so quality degrades instead of stalling.`,
+    `Increase the TCP window size and the bandwidth-delay product so the connection tolerates loss better.`,
+    `Switch all three channels to HTTP/2 over TLS, which multiplexes streams and removes head-of-line blocking.`,
+    `Compress the media harder so fewer bytes are lost in the same packet loss episode.`
+  ],
+  answer:0,
+  explanation:`TCP guarantees ordered, complete delivery, so a single lost segment stalls delivery of everything behind it until it is retransmitted, which is head-of-line blocking and is exactly the freeze users describe. Real-time media prefers UDP precisely because a late frame is worse than a dropped one; the reliability that is worth having, such as retransmission and error concealment, is added at the application layer where it can skip stale data. Chat and signalling do need reliability and ordering, so they stay on TCP. A bigger window only delays the stall, HTTP/2 removes HOL blocking across streams but not within a stream and still requires ordered delivery, and compression reduces but does not remove the coupling.`
+},
+{
+  id:"Q35", section:"D", theme:"Networking", topic:"What TLS protects and what it does not",
+  stem:`A product page shows the padlock icon, so a user concludes the site is secure and enters their card number. Which of these is NOT prevented by HTTPS?`,
+  options:[
+    `A cross-site scripting bug on the page, or a compromised origin server, reading the data after TLS has decrypted it.`,
+    `A passive network attacker on the same Wi-Fi reading the request and response bodies in clear text.`,
+    `An active network attacker modifying the response in transit without the server's private key.`,
+    `A third party who has obtained the certificate file but not the private key from impersonating the server.`
+  ],
+  answer:0,
+  explanation:`TLS authenticates the server through a certificate chain and encrypts and integrity-protects everything on the wire, so B, C and D are all exactly what it prevents. It says nothing about what happens after decryption at either endpoint: an XSS payload running in the page, a malicious dependency, or a compromised origin server all read the data in clear text with TLS working perfectly. This is why the padlock only certifies the channel and the server identity, not the integrity of the application. Defending against XSS requires output encoding, a strict Content-Security-Policy and sanitisation, none of which TLS provides.`
+},
+{
+  id:"Q36", section:"D", theme:"Security", topic:"SQL injection root cause and fix",
+  code:`String email = request.getParameter("email");
+String sql = "SELECT * FROM users WHERE email = '" + email + "'";
+Statement st = conn.createStatement();
+ResultSet rs = st.executeQuery(sql);`,
+  stem:`A security review finds this query accepts email = ' OR '1'='1 and returns every row. What is the root cause and the correct fix?`,
+  options:[
+    `User input is concatenated into SQL text, so input becomes code. Use a PreparedStatement with a bound parameter (?), set the value separately, and never build SQL by string concatenation.`,
+    `Single quotes should be escaped by replacing them with double quotes before concatenation.`,
+    `The database account has more privileges than the query needs, so restricting it to SELECT on this one table fixes it.`,
+    `The endpoint should hide database error messages from the client so the attack cannot be tuned.`
+  ],
+  answer:0,
+  explanation:`The defect is that input is concatenated into the query string, so the parser treats the attacker's text as SQL syntax rather than as data. A PreparedStatement separates the query template from its parameters: the template is parsed once, and the value is transmitted out of band and bound as data, so quotes and operators inside it can never change the statement's meaning. Quote-escaping is fragile because it depends on character set, mode and context. Least-privilege accounts reduce the blast radius of a successful injection but do not stop the injection. Suppressing error messages hides the signal without removing the flaw. Defence in depth means parameterised queries plus least privilege, never one instead of the other.`
+},
+{
+  id:"Q37", section:"D", theme:"Security", topic:"Weakest link in a CI credential chain",
+  code:`MFA                       : disabled on the CI service account
+CI credential             : long-lived AWS access key, policy AdministratorAccess
+Rotation                  : manual, "every few months"
+Secrets in git            : one .env committed 8 months ago, since deleted`,
+  stem:`A reviewer flags this stack as unsafe. Which change most reduces the blast radius if the CI host is compromised?`,
+  options:[
+    `Replace the long-lived admin key with short-lived, least-privilege credentials federated to the CI identity (OIDC / instance role) with no stored secret, require MFA everywhere, and treat the previously committed .env value as permanently leaked and rotate it.`,
+    `Move the AWS key from a config file into a CI secret variable so it is no longer readable in the repository.`,
+    `Enable MFA on the CI account and keep the AdministratorAccess policy for now.`,
+    `Increase the rotation frequency to monthly and add a scheduled secret-scanning job.`
+  ],
+  answer:0,
+  explanation:`Impact is bounded by privilege and by how long the credential is usable, so the highest-value change is federated, short-lived, least-privilege access with no long-lived secret on the host at all; MFA is then still required for human access, and the value that was ever committed to git is permanently compromised because history retains it, so deleting the file is not remediation. Storing the key in a CI secret variable keeps the same long-lived admin credential in the same reachable environment, which a host compromise already exposes. Enabling MFA protects human logins, not the API key that already bypasses MFA. More frequent rotation shortens the window but never closes it. Secret scanning and rotation are valuable hygiene; they are not a substitute for eliminating the static credential.`
+},
+{
+  id:"Q38", section:"D", theme:"Agile", topic:"Definition of Done, story points and velocity",
+  stem:`At the sprint review the team demos 12 of 15 stories, but four have no automated tests and one still has a known critical defect. The scrum master proposes to declare the sprint complete and carry the rest over because velocity was already reported as 13. What is correct?`,
+  options:[
+    `The sprint is not done. The team's Definition of Done was not met, so the incomplete items remain in the sprint and the reported velocity is not 13. Story points are relative effort, not hours, and velocity is a team-local planning signal rather than a target or a performance measure.`,
+    `Declare it done anyway, because velocity is only used for forecasting and the story points were already burned.`,
+    `Report velocity as 12 rather than 13, since points reflect completed work, and carry the remaining three stories forward.`,
+    `Split each incomplete story into more, smaller stories so the points still add up to the committed total.`
+  ],
+  answer:0,
+  explanation:`Velocity counts work that satisfies the Definition of Done, so incomplete or untested items contribute nothing to it and the reported figure is wrong. Story points are a relative, deliberately imprecise size measure used to compare items within one team's backlog; they are not hours, and comparing velocity across teams is meaningless because each team's estimation scale is its own. Velocity is used to forecast capacity and to trigger retrospectives when it drops; it is never a target and never a measure of individual performance. Splitting unfinished work to preserve the point total is exactly the kind of reporting pressure that makes the metric useless.`
+},
+{
+  id:"Q39", section:"D", theme:"DevOps", topic:"Build once, promote the same artifact",
+  stem:`A release pipeline builds the jar in the staging job, tests it there, then rebuilds the same commit in the release job and deploys that second build to production. Production shows a bug staging never reproduced. What is the correct pipeline design?`,
+  options:[
+    `Build the artifact exactly once and promote that immutable artifact through environments, attaching a provenance and version stamp, and make rollback a redeploy of the previous known-good artifact rather than a rebuild.`,
+    `Keep rebuilding, but run the full test suite again in the release job so the production build is at least fully tested.`,
+    `Make the release job use the same dependency versions and JDK image as staging.`,
+    `Deploy a canary to a small percentage of production traffic and expand only if error rates stay flat.`
+  ],
+  answer:0,
+  explanation:`A rebuild is a different artifact even from an identical commit, because build timestamps, dependency resolution and non-reproducible steps can differ, so the thing you tested is not the thing you ship. Building once and promoting the same immutable, checksummed artifact through environments is what makes a staging result evidence about production. Reproducibility and pinned dependencies help but do not guarantee byte identity, and running the tests again tests a new artifact. A canary is a complementary rollout technique that limits blast radius, not a fix for artifact drift, and it is worthless if the binary under test is not the binary that will eventually be at 100 percent.`
+},
+{
+  id:"Q40", section:"D", theme:"Docker", topic:"Images, containers and persistent volumes",
+  code:`services:
+  app:
+    image: myapp:1.0
+  db:
+    image: postgres:16
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+volumes:
+  dbdata:`,
+  stem:`A developer runs docker compose down, changes a compose file and brings the stack back up, and all customer data is gone. Why, and what is the fix?`,
+  options:[
+    `Container filesystems are ephemeral, so data written inside the container is destroyed with it. Mount a named volume or a bind mount at the data directory, as the compose file already does, and keep it across down and up.`,
+    `The image tag postgres:16 is version-pinned but not volume-pinned, so the tag must include the volume id.`,
+    `The container must be run with --restart always so that data survives the compose lifecycle.`,
+    `The app service needs to declare depends_on: db with condition: service_healthy before the database loses its data.`
+  ],
+  answer:0,
+  explanation:`A container's writable layer is tied to its lifecycle: docker compose down removes the containers and their layers, taking anything written there with them. Durable data must live outside the container filesystem, on a named volume managed by Docker or a bind mount to a host path. The compose file shown already declares a named volume dbdata mounted at the PostgreSQL data directory, so with this configuration the data would survive down and up; without that volumes block it would not. Image tags have nothing to do with persistence, restart policies only control whether the process comes back and not what it wrote to disk, and startup ordering does not affect storage durability.`
+}
+];
+
+/* attach counts and sanity-check the bank */
+SECTIONS.forEach(function(s){
+  s.count = QUESTIONS.filter(function(q){ return q.section === s.id; }).length;
+});
+
+/* ==========================================================================
+   STATE
+   ========================================================================== */
+var state = {
+  started: false,
+  submitted: false,
+  answers: new Array(QUESTIONS.length).fill(null),
+  section: SECTIONS[0].id,
+  elapsed: 0,
+  timerId: null
+};
+
+/* ==========================================================================
+   HELPERS
+   ========================================================================== */
+function esc(s){
+  return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+}
+function pad(n){ return (n < 10 ? "0" : "") + n; }
+function fmtTime(sec){
+  var h = Math.floor(sec/3600), m = Math.floor((sec%3600)/60), s = sec%60;
+  return pad(h) + ":" + pad(m) + ":" + pad(s);
+}
+function $(id){ return document.getElementById(id); }
+function qsById(id){
+  for (var i=0;i<QUESTIONS.length;i++) if (QUESTIONS[i].id === id) return QUESTIONS[i];
+  return null;
+}
+function isSql(q){
+  return !!(q.code && q.code.trim().indexOf("SELECT") === 0);
+}
+function optsHtml(q){
+  var inCode = isSql(q);
+  var out = "";
+  for (var k=0;k<q.options.length;k++){
+    out += '<label class="opt" data-q="' + q.id + '" data-k="' + k + '">' +
+             '<input type="radio" name="opt-' + q.id + '" value="' + k + '">' +
+             '<span class="k">' + LETTERS[k] + '</span>' +
+             '<span class="t">' + (inCode ? '<code>' + esc(q.options[k]) + '</code>' : esc(q.options[k])) + '</span>' +
+           '</label>';
+  }
+  return out;
+}
+
+/* ==========================================================================
+   CHROME GENERATED FROM THE SECTION REGISTRY
+   ========================================================================== */
+function buildStartCards(){
+  var h = "";
+  SECTIONS.forEach(function(s, i){
+    h += '<div class="mini">' +
+           '<div class="pill">Topic ' + (i+1) + ' &middot; ' + s.count + ' questions &middot; ' + s.range + '</div>' +
+           '<div class="t">' + s.label + '</div>' +
+           '<div class="d">' + s.desc + '</div>' +
+         '</div>';
+  });
+  $("startCards").innerHTML = h;
+}
+
+function buildTabs(){
+  var t = "";
+  SECTIONS.forEach(function(s, i){
+    t += '<button class="tab' + (i === 0 ? " on" : "") + '" data-sec="' + s.id + '">Topic ' + (i+1) +
+         ' &mdash; ' + s.label + '<span class="mini" id="tab' + s.id + '">0 / ' + s.count + ' answered</span></button>';
+  });
+  $("secTabs").innerHTML = t;
+
+  var r = "";
+  SECTIONS.forEach(function(s, i){
+    r += '<button class="tab' + (i === 0 ? " on" : "") + '" data-rsec="' + s.id + '">Topic ' + (i+1) +
+         ' &mdash; ' + s.short + '<span class="mini" id="rtab' + s.id + '">0/' + s.count + '</span></button>';
+  });
+  r += '<button class="tab" data-rsec="' + ANALYSIS_ID + '">Performance analysis<span class="mini">themes &amp; priorities</span></button>';
+  $("resTabs").innerHTML = r;
+
+  var sh = "";
+  SECTIONS.forEach(function(s, i){
+    sh += '<div id="sec' + s.id + '"' + (i === 0 ? "" : ' class="hidden"') + '></div>';
+  });
+  $("secHosts").innerHTML = sh;
+
+  var rh = "";
+  SECTIONS.forEach(function(s){
+    rh += '<div id="rsec' + s.id + '" class="hidden"></div>';
+  });
+  rh += '<div id="rsec' + ANALYSIS_ID + '" class="hidden"></div>';
+  $("resHosts").innerHTML = rh;
+}
+
+/* ==========================================================================
+   BUILD TEST UI
+   ========================================================================== */
+function buildQuestion(q){
+  var wrap = document.createElement("div");
+  wrap.className = "q";
+  wrap.id = "q-" + q.id;
+
+  var html = '<div class="qhead"><span class="qid">' + q.id + '</span>' +
+             '<span class="qtopic">' + esc(q.theme) + ' &middot; ' + esc(q.topic) + '</span></div>';
+  html += '<div class="qstem">' + esc(q.stem) + '</div>';
+  if (q.code) html += '<pre><code>' + esc(q.code) + '</code></pre>';
+  html += '<div class="opts">' + optsHtml(q) + '</div>';
+  wrap.innerHTML = html;
+  return wrap;
+}
+
+function buildTest(){
+  SECTIONS.forEach(function(s){ $("sec" + s.id).innerHTML = ""; });
+  QUESTIONS.forEach(function(q){
+    $("sec" + q.section).appendChild(buildQuestion(q));
+  });
+
+  document.querySelectorAll('input[type="radio"]').forEach(function(r){
+    r.addEventListener("change", function(){
+      var id = r.name.replace("opt-", "");
+      var idx = QUESTIONS.findIndex(function(q){ return q.id === id; });
+      state.answers[idx] = parseInt(r.value, 10);
+      syncSelection(id);
+      updateCounters();
+    });
+  });
+
+  document.querySelectorAll(".opt").forEach(function(lab){
+    lab.addEventListener("click", function(ev){
+      if (state.submitted) return;
+      if (ev.target.tagName === "INPUT") return;
+      var r = lab.querySelector("input");
+      r.checked = true;
+      r.dispatchEvent(new Event("change"));
+    });
+  });
+
+  var chips = "";
+  QUESTIONS.forEach(function(q){
+    chips += '<button class="chip" data-jump="' + q.id + '">' + q.id + '</button>';
+  });
+  $("chips").innerHTML = chips;
+  $("chips").addEventListener("click", function(ev){
+    var b = ev.target.closest(".chip");
+    if (!b) return;
+    var id = b.getAttribute("data-jump");
+    var q = qsById(id);
+    if (state.section !== q.section) setSection(q.section);
+    var el = $("q-" + id);
+    if (el) el.scrollIntoView({behavior:"smooth", block:"start"});
+  });
+
+  document.querySelectorAll(".tab[data-sec]").forEach(function(t){
+    t.addEventListener("click", function(){ setSection(t.getAttribute("data-sec")); });
+  });
+
+  $("sTot").textContent = QUESTIONS.length;
+  $("sLeft").textContent = QUESTIONS.length;
+  updateCounters();
+}
+
+function syncSelection(id){
+  var idx = QUESTIONS.findIndex(function(x){ return x.id === id; });
+  var sel = state.answers[idx];
+  document.querySelectorAll('.opt[data-q="' + id + '"]').forEach(function(l){
+    l.classList.toggle("sel", sel !== null && l.getAttribute("data-k") === String(sel));
+  });
+}
+
+function setSection(sec){
+  state.section = sec;
+  document.querySelectorAll(".tab[data-sec]").forEach(function(t){
+    t.classList.toggle("on", t.getAttribute("data-sec") === sec);
+  });
+  SECTIONS.forEach(function(s){
+    $("sec" + s.id).classList.toggle("hidden", s.id !== sec);
+  });
+  window.scrollTo({top:0, behavior:"smooth"});
+}
+
+function updateCounters(){
+  var counts = {};
+  SECTIONS.forEach(function(s){ counts[s.id] = 0; });
+  var total = 0;
+  QUESTIONS.forEach(function(q, i){
+    if (state.answers[i] !== null){ total++; counts[q.section]++; }
+  });
+  $("sAns").textContent = total;
+  $("sLeft").textContent = QUESTIONS.length - total;
+  $("prog").style.width = (total / QUESTIONS.length * 100) + "%";
+  SECTIONS.forEach(function(s){
+    $("tab" + s.id).textContent = counts[s.id] + " / " + s.count + " answered";
+  });
+
+  document.querySelectorAll(".chip").forEach(function(c){
+    var q = qsById(c.getAttribute("data-jump"));
+    var i = QUESTIONS.findIndex(function(x){ return x.id === q.id; });
+    c.classList.toggle("answered", state.answers[i] !== null);
+    c.classList.toggle("cur", q.section === state.section);
+  });
+}
+
+/* ==========================================================================
+   TIMER
+   ========================================================================== */
+function startTimer(){
+  state.timerId = setInterval(function(){
+    state.elapsed++;
+    $("timer").textContent = fmtTime(state.elapsed);
+  }, 1000);
+}
+
+/* ==========================================================================
+   RESULTS
+   ========================================================================== */
+function compute(){
+  var r = {sec:{}, perQ:[]};
+  SECTIONS.forEach(function(s){ r.sec[s.id] = {correct:0, total:s.count}; });
+  QUESTIONS.forEach(function(q, i){
+    var picked = state.answers[i];
+    var correct = picked !== null && picked === q.answer;
+    if (correct) r.sec[q.section].correct++;
+    r.perQ.push({picked:picked, correct:correct});
+  });
+  return r;
+}
+
+function pctOf(c, n){ return Math.round(c / n * 1000) / 10; }
+
+function band(pct){
+  if (pct >= 75) return "hi";
+  if (pct >= 50) return "mid";
+  return "lo";
+}
+
+function card(lbl, val, note, cls){
+  return '<div class="card ' + (cls||"") + '"><div class="lbl">' + lbl +
+         '</div><div class="val">' + val + '</div><div class="note">' + note + '</div></div>';
+}
+
+function buildReview(q, r){
+  var el = document.createElement("div");
+  var status = r.correct ? "ok" : (r.picked === null ? "sk" : "no");
+  var badge = r.correct ? "Correct" : (r.picked === null ? "Not answered" : "Incorrect");
+
+  var html = '<div class="rq ' + status + '">' +
+    '<div class="qhead"><span class="qid">' + q.id + '</span>' +
+      '<span class="qtopic">' + esc(q.theme) + ' &middot; ' + esc(q.topic) + '</span>' +
+      '<span class="badge">' + badge + '</span></div>';
+  html += '<div class="qstem">' + esc(q.stem) + '</div>';
+  if (q.code) html += '<pre><code>' + esc(q.code) + '</code></pre>';
+  html += '<div class="ropts">';
+  for (var k=0;k<q.options.length;k++){
+    var cls = "", flag = "";
+    if (k === q.answer){ cls = "correct"; flag = "correct answer"; }
+    else if (k === r.picked){ cls = "wrongpick"; flag = "your answer"; }
+    var inCode = isSql(q);
+    html += '<div class="ropt ' + cls + '"><span class="k">' + LETTERS[k] + '</span>' +
+            '<span class="t">' + (inCode ? '<code>' + esc(q.options[k]) + '</code>' : esc(q.options[k])) + '</span>' +
+            (flag ? '<span class="flag">' + flag + '</span>' : '') + '</div>';
+  }
+  html += '</div>';
+  html += '<div class="rexpl"><b>' + (r.picked === null ? "You left this unanswered. It has been scored as incorrect. " : "Explanation. ") +
+          '</b>' + esc(q.explanation) + '</div>';
+  html += '</div>';
+  el.innerHTML = html;
+  return el;
+}
+
+function renderResults(res){
+  var totalCorrect = SECTIONS.reduce(function(sum, s){ return sum + res.sec[s.id].correct; }, 0);
+  var pct = pctOf(totalCorrect, QUESTIONS.length);
+
+  var cards = card("Overall", totalCorrect + " / " + QUESTIONS.length, pct.toFixed(1) + "% correct", band(pct));
+  SECTIONS.forEach(function(s, i){
+    var c = res.sec[s.id].correct;
+    var p = pctOf(c, s.count);
+    cards += card("Topic " + (i+1) + " &mdash; " + s.short, c + " / " + s.count, p.toFixed(1) + "% correct", band(p));
+  });
+  var skipped = state.answers.filter(function(a){ return a === null; }).length;
+  cards += card("Unanswered", String(skipped), skipped ? "counted as incorrect" : "all questions attempted", skipped ? "mid" : "hi");
+  $("scoreCards").innerHTML = cards;
+  SECTIONS.forEach(function(s){ $("rtab" + s.id).textContent = res.sec[s.id].correct + "/" + s.count; });
+
+  var v = "";
+  if (totalCorrect >= 32)      v = "Very strong. You are comfortable at the level this screen actually tests &mdash; applied reasoning over four core CS topics rather than definitions. Keep the weak themes below on rotation and re-test under time pressure.";
+  else if (totalCorrect >= 26) v = "Solid overall with visible gaps. The per-topic scores show where the loss is concentrated; treat the ranked revision priorities as the study plan rather than re-reading everything.";
+  else if (totalCorrect >= 20) v = "Below the target band. Fundamentals are present but the harder applied items are costing you marks. Work the ranked priorities top-down and retake this mock under time.";
+  else                        v = "Significant gaps across the core topics. Start with the highest-weighted revisions below, rebuild the fundamentals, then retake. Tracing code and reasoning about trade-offs are the main levers here.";
+  v += "<br><span style='color:var(--muted);font-size:13.5px'>Time used: " + fmtTime(state.elapsed) +
+       " &middot; " + SECTIONS.map(function(s, i){
+           return "Topic " + (i+1) + ": " + res.sec[s.id].correct + "/" + s.count;
+         }).join(" &middot; ") + "</span>";
+  $("verdict").innerHTML = v;
+
+  SECTIONS.forEach(function(s, i){
+    var host = $("rsec" + s.id);
+    host.innerHTML = '<h2 class="sec">Topic ' + (i+1) + ' &mdash; ' + s.label + ' review</h2>';
+    QUESTIONS.forEach(function(q, qi){
+      if (q.section !== s.id) return;
+      host.appendChild(buildReview(q, res.perQ[qi]));
+    });
+  });
+
+  renderAnalysis(res);
+}
+
+function renderAnalysis(res){
+  var host = $("rsec" + ANALYSIS_ID);
+  var html = '<h2 class="sec">Performance analysis</h2>';
+
+  var themes = {};
+  QUESTIONS.forEach(function(q, i){
+    var t = themes[q.theme] || (themes[q.theme] = {c:0, n:0, sec:q.section});
+    t.n++;
+    if (res.perQ[i].correct) t.c++;
+  });
+
+  function themeBlock(title, list){
+    var out = '<h3 class="sub2">' + title + '</h3>';
+    list.sort(function(a,b){ return (a.c/a.n) - (b.c/b.n); });
+    list.forEach(function(t){
+      var p = Math.round(t.c / t.n * 100);
+      out += '<div class="theme"><div class="row"><span class="n">' + t.key + '</span>' +
+             '<span class="s">' + t.c + '/' + t.n + ' &middot; ' + p + '%</span></div>' +
+             '<div class="tbar ' + band(p) + '"><i style="width:' + p + '%"></i></div></div>';
+    });
+    return out;
+  }
+
+  SECTIONS.forEach(function(s, i){
+    var list = [];
+    Object.keys(themes).forEach(function(k){
+      if (themes[k].sec === s.id) list.push({key:k, c:themes[k].c, n:themes[k].n});
+    });
+    html += themeBlock("Topic " + (i+1) + " &mdash; " + s.short + " themes", list);
+  });
+
+  var missed = [];
+  QUESTIONS.forEach(function(q, i){
+    if (!res.perQ[i].correct) missed.push(q);
+  });
+  html += '<h3 class="sub2">Revision priorities from your actual mistakes</h3>';
+  if (missed.length === 0){
+    html += '<div class="prio"><p style="margin:12px 0 0;color:var(--muted)">No incorrect or unanswered items. Move on to timed past papers under exam conditions.</p></div>';
+  } else {
+    var byTheme = {};
+    missed.forEach(function(q){ (byTheme[q.theme] || (byTheme[q.theme] = [])).push(q); });
+    var ordered = Object.keys(byTheme).map(function(k){
+      var arr = byTheme[k];
+      var secTotal = QUESTIONS.filter(function(x){ return x.theme === k; }).length;
+      return {key:k, arr:arr, secTotal:secTotal};
+    }).sort(function(a,b){ return (b.arr.length - a.arr.length) || (a.key < b.key ? -1 : 1); });
+
+    html += '<div class="prio"><ol>';
+    ordered.forEach(function(g){
+      var ids = g.arr.map(function(q){ return q.id; }).join(", ");
+      html += '<li><span class="tag">' + g.key + '</span>Missed ' + g.arr.length + ' of ' + g.secTotal +
+              ' question' + (g.secTotal > 1 ? "s" : "") + ' (' + ids + '). Specific gap: ' +
+              esc(g.arr[0].topic) + '. Re-derive each answer from first principles rather than memorising the correct letter.</li>';
+    });
+    html += '</ol></div>';
+  }
+
+  html += '<h3 class="sub2">Notes</h3><div class="prio"><ol>';
+  html += '<li>Unanswered questions were scored as incorrect, not excluded.</li>';
+  html += '<li>Every question here is core computer science. There is no AI-literacy material in this mock.</li>';
+  html += '<li>Code fragments are valid Java unless the stem or the fragment itself says otherwise; trace evaluation order, integer promotion and overflow literally.</li>';
+  html += '<li>Topic 1 items are answer-tracing and pseudocode execution. Simulate each statement by hand before committing to an option.</li>';
+  html += '<li>Topic 2 distractors usually name a real technique under the wrong precondition or with the wrong cost; check the precondition and the Big-O first.</li>';
+  html += '<li>Topic 3 distractors are plausible partial fixes; the correct option is the one that removes the root cause, not the symptom.</li>';
+  html += '<li>Topic 4 items ask you to identify the layer responsible (client, network, platform, application, process) before choosing a mitigation.</li>';
+  html += '<li>Time used: ' + fmtTime(state.elapsed) + '. A real Exceller screen is time-bound, so practise retrieval and decomposition as much as knowledge.</li>';
+  html += '</ol></div>';
+  host.innerHTML = html;
+}
+
+/* ==========================================================================
+   EVENTS
+   ========================================================================== */
+$("beginBtn").addEventListener("click", function(){
+  state.started = true;
+  $("startScreen").classList.add("hidden");
+  $("testScreen").classList.remove("hidden");
+  startTimer();
+});
+
+$("submitBtn").addEventListener("click", function(){
+  var left = state.answers.filter(function(a){ return a === null; }).length;
+  var msg = left === 0
+    ? "Submit your assessment now? Answers cannot be changed afterwards."
+    : "You have " + left + " unanswered question" + (left > 1 ? "s" : "") + ". Unanswered questions are scored as incorrect.\n\nSubmit now?";
+  if (!confirm(msg)) return;
+
+  state.submitted = true;
+  clearInterval(state.timerId);
+  document.querySelectorAll('input[type="radio"]').forEach(function(r){ r.disabled = true; });
+  document.querySelectorAll(".opt").forEach(function(l){
+    l.classList.add("locked");
+    l.classList.remove("sel");
+  });
+  document.querySelectorAll(".chip").forEach(function(c){ c.classList.remove("cur"); });
+
+  var res = compute();
+  renderResults(res);
+
+  $("resTime").textContent = fmtTime(state.elapsed);
+  $("resMeta").textContent = "Assessment complete \u00b7 " + QUESTIONS.length + " questions";
+  $("testScreen").classList.add("hidden");
+  $("resultScreen").classList.remove("hidden");
+  window.scrollTo({top:0});
+});
+
+$("clearBtn").addEventListener("click", function(){
+  if (!confirm("Clear all selected answers in the current topic? This cannot be undone.")) return;
+  QUESTIONS.forEach(function(q, i){
+    if (q.section !== state.section) return;
+    state.answers[i] = null;
+    var r = document.querySelector('input[name="opt-' + q.id + '"]:checked');
+    if (r) r.checked = false;
+    syncSelection(q.id);
+  });
+  updateCounters();
+});
+
+document.querySelectorAll(".tab[data-rsec]").forEach(function(t){
+  t.addEventListener("click", function(){
+    var s = t.getAttribute("data-rsec");
+    document.querySelectorAll(".tab[data-rsec]").forEach(function(x){
+      x.classList.toggle("on", x === t);
+    });
+    SECTIONS.concat([{id:ANALYSIS_ID}]).forEach(function(s2){
+      $("rsec" + s2.id).classList.toggle("hidden", s2.id !== s);
+    });
+    window.scrollTo({top:0, behavior:"smooth"});
+  });
+});
+
+$("backBtn").addEventListener("click", function(){
+  var t = document.querySelector('.tab[data-rsec="' + SECTIONS[0].id + '"]');
+  if (t) t.click();
+});
+
+$("resetBtn").addEventListener("click", function(){
+  if (!confirm("Reset the assessment? All answers, scores and results will be cleared and the timer will restart.")) return;
+  location.reload();
+});
+
+document.addEventListener("keydown", function(e){
+  var onTest = !$("testScreen").classList.contains("hidden");
+  var onRes  = !$("resultScreen").classList.contains("hidden");
+  if (!onTest && !onRes) return;
+
+  var keys = ["ArrowRight","ArrowDown","ArrowLeft","ArrowUp"];
+  if (keys.indexOf(e.key) === -1) return;
+
+  var scope = onTest ? ".tab[data-sec]" : ".tab[data-rsec]";
+  var tabs = Array.prototype.slice.call(document.querySelectorAll(scope));
+  var i = tabs.findIndex(function(t){ return t.classList.contains("on"); });
+  if (i < 0) return;
+
+  e.preventDefault();
+  var forward = (e.key === "ArrowRight" || e.key === "ArrowDown");
+  var j = forward ? (i + 1) % tabs.length : (i - 1 + tabs.length) % tabs.length;
+  tabs[j].click();
+});
+
+/* ==========================================================================
+   VISITOR COUNT (IP-based, deduplicated server-side)
+   ========================================================================== */
+var visitorRegistered = false;
+function initVisitorCounter(){
+  if(visitorRegistered) return;
+  visitorRegistered = true;
+
+  var targets = document.querySelectorAll('#visCount');
+
+  function paint(text, title){
+    targets.forEach(function(el){
+      el.textContent = text;
+      if(title) el.title = title;
+    });
+  }
+  if(!targets.length) return;
+
+  paint('\u2014', 'Registering this visit\u2026');
+
+  fetch('/api/visitor', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({site: 'cognitive-game-lab'})
+  })
+  .then(function(res){ if(!res.ok) throw new Error('endpoint unavailable'); return res.json(); })
+  .then(function(data){
+    var n = Number(data && data.count);
+    paint(isFinite(n) ? n.toLocaleString() : '\u2014',
+          'Unique visitors, deduplicated by IP address');
+  })
+  .catch(function(){
+    paint('\u2014', 'Visitor count unavailable');
+  });
+}
+
+buildStartCards();
+buildTabs();
+buildTest();
+initVisitorCounter();
+</script>
+</body>
+</html>

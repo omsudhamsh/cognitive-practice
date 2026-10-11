@@ -9,6 +9,7 @@
   ],
   "rewrites": [
     { "source": "/mock-1", "destination": "/mock-1/index.html" },
-    { "source": "/mock-2", "destination": "/mock-2/index.html" }
+    { "source": "/mock-2", "destination": "/mock-2/index.html" },
+    { "source": "/mock-3", "destination": "/mock-3/index.html" }
   ]
 }

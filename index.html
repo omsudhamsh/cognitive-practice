@@ -290,6 +290,7 @@ function shell(inner){
     <nav class="nav">
       <button onclick="go('home')" class="${state.route==='home'?'active':''}">Games</button>
       <a class="navlink" href="/mock-1">AI + CS Mock Test</a>
+      <a class="navlink" href="/mock-3">Core CS Mock</a>
       <button onclick="window.showGuide()">How it works</button>
       <button onclick="go('stats')" class="${state.route==='stats'?'active':''}">Progress</button>
       <button class="themeToggle" onclick="toggleTheme()" title="Toggle dark mode"><span>Dark</span> â—</button>
@@ -358,6 +359,18 @@ function renderHome(){
         </div>
         <div class="gameMeta"><span>Timer &middot; Explanations after submit</span>
           <a class="btn blue" style="text-decoration:none" href="/mock-2">Open Mock 2 &rarr;</a>
+        </div>
+      </article>
+      <article class="card gameCard mcqCard">
+        <div class="gameHead"><div class="iconBox">&#9881;</div><span class="pill">Written Mock</span></div>
+        <h3>Core CS Concepts Mock</h3>
+        <p>Technical Screening &middot; 40 core computer science questions &middot; No AI-literacy material. Four topics: programming logic and problem solving, data structures and algorithms, software engineering fundamentals, and modern engineering awareness.</p>
+        <div class="featureGrid" style="grid-template-columns:1fr 1fr">
+          <div class="feature"><b>Topic 1 &amp; 2 &mdash; Logic, DSA</b><p>20 tracing, complexity and structure questions.</p></div>
+          <div class="feature"><b>Topic 3 &amp; 4 &mdash; SE, Modern</b><p>20 OOP, SQL, REST, Git, cloud and DevOps questions.</p></div>
+        </div>
+        <div class="gameMeta"><span>Timer &middot; Full analysis after submit</span>
+          <a class="btn blue" style="text-decoration:none" href="/mock-3">Open Mock 3 &rarr;</a>
         </div>
       </article>
       ${Object.entries(games).map(([k,g])=>`

@@ -25,6 +25,19 @@ Both share this structure:
 
 The tests run entirely client-side. Correct answers and explanations stay hidden until the candidate submits, at which point they produce a scored breakdown by section, plus revision priorities derived from the questions actually missed.
 
+## Core CS Concepts Mock Test
+
+A dedicated **`/mock-3`** route holds a 40-question paper that is **core computer science only**. It contains no AI-literacy questions at all, so it can be used to isolate CS fundamentals from the combined mocks above.
+
+| Topic | Questions | Coverage |
+|---|---|---|
+| **1 - Programming Logic & Problem Solving** | Q01-Q10 | Variables, data types, I/O logic, pseudocode tracing, output prediction |
+| **2 - Data Structures & Algorithms** | Q11-Q20 | Arrays, strings, hashing, searching, sorting, time/space complexity |
+| **3 - Software Engineering Fundamentals** | Q21-Q30 | OOP, DBMS, SQL, REST APIs, HTTP methods, Git basics |
+| **4 - Modern Engineering Awareness** | Q31-Q40 | Client-server, cloud, API keys vs tokens, networking, cybersecurity, Agile, DevOps, Docker |
+
+Each topic is worth 10 questions and gets its own tab, per-topic score card and theme-level analysis. The page keeps the same scoring rules as the other mocks: unanswered questions count as incorrect, answers are changeable until submission, and explanations are revealed only afterwards.
+
 ## Visitor counter
 
 `POST /api/visitor` counts unique visitors. Uniqueness is based on the client IP address, which is **salted and SHA-256 hashed before storage** - raw IP addresses are never written to the store.
