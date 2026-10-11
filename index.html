@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Cognitive Game Lab — Capgemini / Aon-Style Practice</title>
+<title>Cognitive Game Lab â€” Capgemini / Aon-Style Practice</title>
 <style>
 :root{
   --bg:#f6f8fc; --panel:#fff; --ink:#17233c; --muted:#66738d; --line:#dfe5ef;
@@ -24,6 +24,10 @@ button{cursor:pointer}
 .nav button,.ghost{border:0;background:transparent;color:#4f5d77;padding:10px 13px;border-radius:10px;font-weight:600}
 .nav button:hover,.ghost:hover{background:#f1f4f9}
 .nav .active{background:var(--soft);color:var(--blue);font-weight:700}
+.nav .navlink{border:0;background:transparent;color:#4f5d77;padding:10px 13px;border-radius:10px;font-weight:600;text-decoration:none;display:inline-block}
+.nav .navlink:hover{background:#f1f4f9}
+html.dark .nav .navlink{color:#aebbd0}
+html.dark .nav .navlink:hover{background:#1b2940}
 .shell{max-width:1180px;margin:0 auto;padding:34px 22px 60px}
 .hero{display:grid;grid-template-columns:1.25fr .75fr;gap:22px;align-items:stretch}
 .heroCard{background:linear-gradient(135deg,#183e9e,#2c64e3);color:#fff;border-radius:24px;padding:34px;box-shadow:var(--shadow);position:relative;overflow:hidden}
@@ -144,7 +148,7 @@ html.dark .reportTable th,html.dark .reportTable td{border-color:#29374d}
 html.dark .reportNote,html.dark .countdownTips{background:#172235;border-color:#29374d;color:#aebbd0}
 html.dark .countdownCircle{background:linear-gradient(135deg,#162746,#1b315c);border-color:#4874e4;color:#8ab0ff}
 .themeToggle{display:inline-flex;align-items:center;gap:7px}
-@media(max-width:850px){.hero{grid-template-columns:1fr}.games{grid-template-columns:1fr}.featureGrid{grid-template-columns:1fr}.topbar{padding:0 13px}.nav button:nth-child(2){display:none}.gameTop{align-items:flex-start;flex-direction:column}.playArea{padding:16px}.choiceGrid{grid-template-columns:1fr}.motionBoard{transform:scale(.82);transform-origin:top center;margin-bottom:-70px}.difficultyPicker{grid-template-columns:1fr 1fr}}
+@media(max-width:850px){.hero{grid-template-columns:1fr}.games{grid-template-columns:1fr}.featureGrid{grid-template-columns:1fr}.topbar{padding:0 13px}.nav button:nth-child(2){display:none}.nav .navlink{padding:10px 9px;font-size:13px}.gameTop{align-items:flex-start;flex-direction:column}.playArea{padding:16px}.choiceGrid{grid-template-columns:1fr}.motionBoard{transform:scale(.82);transform-origin:top center;margin-bottom:-70px}.difficultyPicker{grid-template-columns:1fr 1fr}}
 @media(max-width:480px){h1{font-size:32px}.topbar{height:60px}.brand span{display:none}.metrics{width:100%}.metric{flex:1}.miniGrid{grid-template-columns:repeat(4,45px);grid-template-rows:repeat(4,45px)}.cell{width:45px;height:45px}.motionBoard{transform:scale(.65);margin-bottom:-140px}.difficultyPicker{grid-template-columns:1fr}}
 </style>
 </head>
@@ -237,10 +241,10 @@ function toggleTheme(){
 applyTheme();
 
 const games = {
-  grid: {title:'Grid Challenge', skill:'Working Memory', time:540, icon:'▦', desc:'Remember ordered dots while alternating with visual symmetry, rotation, and pattern decisions.', level:'Easy → Complex'},
-  logical: {title:'Logical Reasoning', skill:'Logical Deduction', time:480, icon:'⌁', desc:'Solve workplace-style deduction passages and identify the statement that must be logically true.', level:'Easy → Complex'},
-  behavioral: {title:'Behavioral Module', skill:'Workplace Personality', time:600, icon:'◉', desc:'Respond to workplace personality scenarios using a verified four-point agreement scale.', level:'Self-Report'},
-  motion: {title:'Motion Challenge', skill:'Complex Spatial Planning', time:360, icon:'↗', desc:'Plan and slide blocks along corridors to navigate the ball to the exit tile.', level:'Easy → Complex'}
+  grid: {title:'Grid Challenge', skill:'Working Memory', time:540, icon:'â–¦', desc:'Remember ordered dots while alternating with visual symmetry, rotation, and pattern decisions.', level:'Easy â†’ Complex'},
+  logical: {title:'Logical Reasoning', skill:'Logical Deduction', time:480, icon:'âŒ', desc:'Solve workplace-style deduction passages and identify the statement that must be logically true.', level:'Easy â†’ Complex'},
+  behavioral: {title:'Behavioral Module', skill:'Workplace Personality', time:600, icon:'â—‰', desc:'Respond to workplace personality scenarios using a verified four-point agreement scale.', level:'Self-Report'},
+  motion: {title:'Motion Challenge', skill:'Complex Spatial Planning', time:360, icon:'â†—', desc:'Plan and slide blocks along corridors to navigate the ball to the exit tile.', level:'Easy â†’ Complex'}
 };
 
 let visitorRegistered = false;
@@ -260,10 +264,12 @@ async function initVisitorCounter(){
     const data = await res.json();
     state.visitorCount = data.count;
     el.textContent = Number(data.count).toLocaleString();
-    if(notice) notice.textContent = 'Unique visitor count · duplicate IPs deduplicated.';
+    if(notice) notice.textContent = data.storage === 'memory'
+      ? 'Unique visitors by IP \u00b7 not yet persistent.'
+      : 'Unique visitor count \u00b7 duplicate IPs deduplicated.';
   }catch(e){
-    el.textContent = '1,280+';
-    if(notice) notice.textContent = 'Practice session active in browser.';
+    el.textContent = '\u2014';
+    if(notice) notice.textContent = 'Visitor count unavailable.';
   }
 }
 
@@ -283,9 +289,10 @@ function shell(inner){
     <button class="ghost brand" onclick="go('home')"><span class="logo"><i></i><i></i><i></i></span><span>Cognitive Game Lab</span></button>
     <nav class="nav">
       <button onclick="go('home')" class="${state.route==='home'?'active':''}">Games</button>
+      <a class="navlink" href="/mock-1">AI + CS Mock Test</a>
       <button onclick="window.showGuide()">How it works</button>
       <button onclick="go('stats')" class="${state.route==='stats'?'active':''}">Progress</button>
-      <button class="themeToggle" onclick="toggleTheme()" title="Toggle dark mode"><span>Dark</span> ◐</button>
+      <button class="themeToggle" onclick="toggleTheme()" title="Toggle dark mode"><span>Dark</span> â—</button>
     </nav>
   </header>${inner}`;
   if(state.route === 'home') setTimeout(initVisitorCounter, 50);
@@ -317,27 +324,52 @@ function renderHome(){
       </div>
       <div class="statPanel">
         <div class="eyebrow" style="color:#6a7891">Practice dashboard</div>
-        <h2 style="margin:7px 0 0">4 challenges · Full Sequential Tiers</h2>
+        <h2 style="margin:7px 0 0">4 challenges Â· Full Sequential Tiers</h2>
         <div class="statGrid">
-          <div class="stat"><b>10–30</b><span>questions per challenge</span></div>
+          <div class="stat"><b>10â€“30</b><span>questions per challenge</span></div>
           <div class="stat"><b>4</b><span>difficulty tiers</span></div>
           <div class="stat"><b>5s</b><span>ready countdown</span></div>
           <div class="stat"><b>Live</b><span>instant validation</span></div>
-          <div class="stat" style="grid-column:1/-1"><b id="visitorCount">—</b><span> visitors · Practice ready</span><div id="visitorNotice" style="font-size:11px;color:var(--muted);margin-top:4px">Deduplicated local session</div></div>
+          <div class="stat" style="grid-column:1/-1"><b id="visitorCount">â€”</b><span> visitors Â· Practice ready</span><div id="visitorNotice" style="font-size:11px;color:var(--muted);margin-top:4px">Deduplicated local session</div></div>
         </div>
       </div>
     </section>
     <div class="sectionTitle"><div><h2>Choose a challenge</h2><p>Select any game to pick difficulty or start the full suite.</p></div><button class="btn soft" onclick="showDifficultyPopup('suite')">Start full exam</button></div>
-    <section class="games">${Object.entries(games).map(([k,g])=>`
+    <section class="games">
+      <article class="card gameCard mcqCard">
+        <div class="gameHead"><div class="iconBox">&#9881;</div><span class="pill">Written Mock</span></div>
+        <h3>AI Literacy + Core CS Mock</h3>
+        <p>Technical Screening &middot; 40 questions &middot; Section A covers AI literacy across prompting, RAG, agentic systems and responsible AI. Section B covers Java tracing, DSA, OOP, SQL/DBMS, HTTP, Git, networking and DevOps.</p>
+        <div class="featureGrid" style="grid-template-columns:1fr 1fr">
+          <div class="feature"><b>Section A &mdash; AI Literacy</b><p>20 applied scenario questions.</p></div>
+          <div class="feature"><b>Section B &mdash; Core CS</b><p>20 code, SQL and infra questions.</p></div>
+        </div>
+        <div class="gameMeta"><span>Timer &middot; Full analysis after submit</span>
+          <a class="btn blue" style="text-decoration:none" href="/mock-1">Open Mock 1 &rarr;</a>
+        </div>
+      </article>
+      <article class="card gameCard mcqCard">
+        <div class="gameHead"><div class="iconBox">&#9881;</div><span class="pill">Written Mock</span></div>
+        <h3>AI Literacy + Core CS Mock (Compact)</h3>
+        <p>Technical Screening &middot; Same 40-question blueprint in a lighter single-file build. Section A covers AI literacy, Section B covers core computer science fundamentals.</p>
+        <div class="featureGrid" style="grid-template-columns:1fr 1fr">
+          <div class="feature"><b>Same 40 questions</b><p>Section A 20 + Section B 20.</p></div>
+          <div class="feature"><b>Lightweight UI</b><p>Faster to load on low-end devices.</p></div>
+        </div>
+        <div class="gameMeta"><span>Timer &middot; Explanations after submit</span>
+          <a class="btn blue" style="text-decoration:none" href="/mock-2">Open Mock 2 &rarr;</a>
+        </div>
+      </article>
+      ${Object.entries(games).map(([k,g])=>`
       <article class="card gameCard">
         <div class="gameHead"><div class="iconBox">${g.icon}</div><span class="pill">${g.level}</span></div>
-        <h3>${g.title}</h3><p>${g.skill} · ${g.desc}</p>
+        <h3>${g.title}</h3><p>${g.skill} Â· ${g.desc}</p>
         <div class="featureGrid" style="grid-template-columns:1fr 1fr">
           <div class="feature"><b>Full Tier</b><p>Sequential presentation of all 10 to 30 questions.</p></div>
           <div class="feature"><b>5s countdown</b><p>Clear focus window before round timer starts.</p></div>
         </div>
-        <div class="gameMeta"><span>⏱ ${Math.round(g.time/60)} min preset</span>
-          <button class="btn blue" onclick="showDifficultyPopup('${k}')">Start ${g.title} →</button>
+        <div class="gameMeta"><span>â± ${Math.round(g.time/60)} min preset</span>
+          <button class="btn blue" onclick="showDifficultyPopup('${k}')">Start ${g.title} â†’</button>
         </div>
       </article>`).join('')}</section>
     <div class="info"><b>Important:</b> This is an independent practice simulator, not an official Capgemini or Aon assessment. Questions and visuals are original. Employer configurations and timings can differ; use your actual invitation as the authority.</div>
@@ -348,7 +380,7 @@ function renderHome(){
 function renderStats(){
   const st = getStats();
   shell(`<main class="shell"><div class="sectionTitle"><div><h2>Practice progress</h2><p>Stored locally in this browser.</p></div><button class="btn outline" onclick="localStorage.removeItem('cglab_stats');renderStats()">Reset Stats</button></div>
-  <section class="games">${Object.entries(games).map(([k,g])=>{let x=st[k]||{runs:0,best:0};return `<article class="card gameCard"><div class="gameHead"><div class="iconBox">${g.icon}</div><span class="pill">${g.skill}</span></div><h3>${g.title}</h3><p>${g.desc}</p><div class="statGrid"><div class="stat"><b>${x.runs}</b><span>completed runs</span></div><div class="stat"><b>${x.best}</b><span>highest score</span></div></div><div class="gameMeta"><span>Browser local</span><button class="btn blue" onclick="showDifficultyPopup('${k}')">Practice →</button></div></article>`}).join('')}</section></main>`);
+  <section class="games">${Object.entries(games).map(([k,g])=>{let x=st[k]||{runs:0,best:0};return `<article class="card gameCard"><div class="gameHead"><div class="iconBox">${g.icon}</div><span class="pill">${g.skill}</span></div><h3>${g.title}</h3><p>${g.desc}</p><div class="statGrid"><div class="stat"><b>${x.runs}</b><span>completed runs</span></div><div class="stat"><b>${x.best}</b><span>highest score</span></div></div><div class="gameMeta"><span>Browser local</span><button class="btn blue" onclick="showDifficultyPopup('${k}')">Practice â†’</button></div></article>`}).join('')}</section></main>`);
 }
 
 function renderGameIntro(k){
@@ -357,7 +389,7 @@ function renderGameIntro(k){
     grid: ['Remember a random red-dot position.','Ignore the pixelated symmetry pattern used as visual interference.','A second dot appears and is followed by another pattern.','Select both remembered positions on the final empty grid.'],
     logical: ['Read the deduction premise carefully.','Examine all four conclusion options.','Select the single statement that must logically follow.','Complete all questions in your selected tier one after another.'],
     behavioral: ['Read each workplace behavioral statement.','Select how genuinely it reflects your typical approach.','Use the 4-point scale: Strongly Agree to Strongly Disagree.','Complete all statements in your selected tier sequentially.'],
-    motion: ['Drag any coloured block along its fixed axis.','Gray × blocks are rigid and cannot move.','Move the red ball through open cells.','Reach the black hole using the minimum number of moves.']
+    motion: ['Drag any coloured block along its fixed axis.','Gray Ã— blocks are rigid and cannot move.','Move the red ball through open cells.','Reach the black hole using the minimum number of moves.']
   }[k];
   shell(`<main class="gameShell"><div class="playArea">
     <div class="instruction"><div class="eyebrow">${g.skill}</div><h2>${g.title}</h2><p>${g.desc}</p></div>
@@ -437,7 +469,7 @@ function startCountdown(k, difficulty){
   shell(`<main class="gameShell">
     <div class="playArea">
       <div class="countdownCard">
-        <div class="eyebrow">${g.title} · ${difficulty.toUpperCase()}</div>
+        <div class="eyebrow">${g.title} Â· ${difficulty.toUpperCase()}</div>
         <h2 style="margin:8px 0 0">Get Ready for Question 1 of ${count}</h2>
         <p style="color:var(--muted);font-size:14px;margin:4px 0 16px">The round and challenge timer will start automatically in:</p>
         <div class="countdownCircle" id="countdownVal">${seconds}</div>
@@ -510,7 +542,7 @@ function gameChrome(k, content){
         <div class="iconBox">${g.icon}</div>
         <div>
           <h1>${g.title}</h1>
-          <p>${g.skill} · <b style="color:var(--blue)">${state.difficulty.toUpperCase()}</b></p>
+          <p>${g.skill} Â· <b style="color:var(--blue)">${state.difficulty.toUpperCase()}</b></p>
         </div>
       </div>
       <div class="metrics">
@@ -569,18 +601,18 @@ function gridQuestionFor(index, difficulty){
     return {type:'symmetry', answer: yes ? 'Yes' : 'No', visual, options:['Yes','No']};
   }
   if(mode === 1){
-    const opts = ['90°','180°','270°'];
+    const opts = ['90Â°','180Â°','270Â°'];
     const answer = opts[(index * 3 + 1) % 3];
-    return {type:'rotation', answer, visual: answer === '90°' ? '↗' : answer === '180°' ? '↕' : '↘', options: opts};
+    return {type:'rotation', answer, visual: answer === '90Â°' ? 'â†—' : answer === '180Â°' ? 'â†•' : 'â†˜', options: opts};
   }
   if(mode === 2){
     const match = (index * 5) % 2 === 0;
-    const visual = match ? ['●','◆','▲'] : ['●','◆','●'];
+    const visual = match ? ['â—','â—†','â–²'] : ['â—','â—†','â—'];
     return {type:'combine', answer: match ? 'Match' : 'Different', visual, options:['Match','Different']};
   }
   const count = (index % 4) + 2;
   const opts = [String(count - 1), String(count), String(count + 1), String(count + 2)];
-  return {type:'count', answer: String(count), visual: '●'.repeat(count), options: opts};
+  return {type:'count', answer: String(count), visual: 'â—'.repeat(count), options: opts};
 }
 
 
@@ -663,12 +695,12 @@ function showGridMemoryDot(){
   const cells=Array.from({length:total},(_,i)=>`<div class="cell">${i===dotId?'<div class="dot"></div>':''}</div>`).join('');
   $('#gridStage').innerHTML=`
     <div class="instruction">
-      <div class="eyebrow">Question ${state.pass+1} of ${state.total} · Memory ${state.gridRound+1} of 2</div>
+      <div class="eyebrow">Question ${state.pass+1} of ${state.total} Â· Memory ${state.gridRound+1} of 2</div>
       <h2>Remember the red dot</h2>
       <p>Its exact position will disappear. Keep it in memory while the visual pattern appears.</p>
     </div>
     <div class="miniGrid gridMemoryBoard" style="grid-template-columns:repeat(${size},56px);grid-template-rows:repeat(${size},56px)">${cells}</div>
-    <div class="center"><span class="pill">${state.difficulty.toUpperCase()} · Round ${state.gridRound+1}/2</span></div>`;
+    <div class="center"><span class="pill">${state.difficulty.toUpperCase()} Â· Round ${state.gridRound+1}/2</span></div>`;
   state.gridTimeout=setTimeout(showGridDistractor,gridDisplayDelay());
 }
 
@@ -677,7 +709,7 @@ function showGridDistractor(){
   const pattern=makePixelSymmetry((state.gridPatternSeed||1)+state.gridRound*7919,{easy:7,medium:8,hard:9,complex:10}[state.difficulty]||8);
   $('#gridStage').innerHTML=`
     <div class="instruction">
-      <div class="eyebrow">Visual Interference · ${state.gridRound+1} of 2</div>
+      <div class="eyebrow">Visual Interference Â· ${state.gridRound+1} of 2</div>
       <h2>Study the pixel pattern</h2>
       <p>This symmetric image is a distraction between memory flashes. Do not select anything.</p>
     </div>
@@ -703,7 +735,7 @@ function gridRecall(){
 
   $('#gridStage').innerHTML=`
     <div class="instruction">
-      <div class="eyebrow">Final Recall · ${targetCount} Positions</div>
+      <div class="eyebrow">Final Recall Â· ${targetCount} Positions</div>
       <h2>Where were the red dots?</h2>
       <p>The visual interference is gone. Select the ${targetCount} cells you remember. Order does not matter.</p>
     </div>
@@ -835,11 +867,11 @@ function nextLogical(){
   state.data = {q, typeIndex};
   $('#logicalStage').innerHTML = `
   <div class="instruction">
-    <div class="eyebrow">Question ${state.pass + 1} of ${state.total} · ${state.difficulty.toUpperCase()} MCQ</div>
+    <div class="eyebrow">Question ${state.pass + 1} of ${state.total} Â· ${state.difficulty.toUpperCase()} MCQ</div>
     <h2>${q.type}</h2>
     <p>Read the premise carefully. Select the one conclusion that <b>must be true</b>.</p>
   </div>
-  <div class="center"><span class="pill">${state.difficulty.toUpperCase()} · Question ${state.pass + 1}/${state.total}</span></div>
+  <div class="center"><span class="pill">${state.difficulty.toUpperCase()} Â· Question ${state.pass + 1}/${state.total}</span></div>
   <div class="logicQuestion">
     <div class="logicStem">${q.stem}</div>
     <div class="logicOptions">${q.opts.map((o, i) => `<button type="button" class="logicOption" onclick="answerLogical(${i})"><b>${String.fromCharCode(65 + i)}.</b> ${o}</button>`).join('')}</div>
@@ -966,14 +998,14 @@ function nextBehavioral(){
   state.data = {typeIndex, statement, answer: null, submitted: false};
   $('#behaviorStage').innerHTML = `
   <div class="instruction">
-    <div class="eyebrow">Statement ${state.pass + 1} of ${state.total} · Behavioral response</div>
+    <div class="eyebrow">Statement ${state.pass + 1} of ${state.total} Â· Behavioral response</div>
     <h2>How accurately does this reflect your approach?</h2>
     <p>Select the option reflecting your genuine workplace behavior.</p>
   </div>
-  <div class="center"><span class="pill">${state.difficulty.toUpperCase()} · Statement ${state.pass + 1}/${state.total}</span></div>
+  <div class="center"><span class="pill">${state.difficulty.toUpperCase()} Â· Statement ${state.pass + 1}/${state.total}</span></div>
   <div class="behaviorQuestion">
     <div class="behaviorStatement">&ldquo;${statement}&rdquo;</div>
-    <div class="agreeScale">${AGREE_LABELS.map((x, i) => `<button type="button" class="agreeBtn" onclick="selectBehavior(${i})"><span>${['●','●','●','●'][i]}</span><small>${x}</small></button>`).join('')}</div>
+    <div class="agreeScale">${AGREE_LABELS.map((x, i) => `<button type="button" class="agreeBtn" onclick="selectBehavior(${i})"><span>${['â—','â—','â—','â—'][i]}</span><small>${x}</small></button>`).join('')}</div>
     <div class="consistency">Assessment note: Respond genuinely. Personality assessments evaluate profile alignment, not single "correct" answers.</div>
     <div class="controls"><button class="btn blue" onclick="submitBehavior()">Continue</button></div>
     <div id="fb" class="feedback"></div>
@@ -1013,7 +1045,7 @@ function finishBehavioral(timeout = false){
       <div class="big">RECORDED</div>
       <h2>Behavioral Module</h2>
       <p>All ${state.total} responses have been archived. Continue to the next challenge in your suite.</p>
-      <div class="controls"><button class="btn blue" onclick="continueSuite()">Next challenge →</button></div>
+      <div class="controls"><button class="btn blue" onclick="continueSuite()">Next challenge â†’</button></div>
     </div>`;
     return;
   }
@@ -1270,7 +1302,7 @@ function checkMotionSolved(){
   const pts=optimal?({easy:70,medium:90,hard:110,complex:130}[state.difficulty]||90):within?({easy:50,medium:65,hard:80,complex:95}[state.difficulty]||65):25;
   state.score+=pts;
   state.correct++;
-  markFeedback(true, optimal ? `Solved in ${state.data.moves} moves — optimal! +${pts} points.` : `Solved in ${state.data.moves} moves. +${pts} points.`);
+  markFeedback(true, optimal ? `Solved in ${state.data.moves} moves â€” optimal! +${pts} points.` : `Solved in ${state.data.moves} moves. +${pts} points.`);
   drawMotion();
   setTimeout(()=>{
     state.pass++;
@@ -1337,36 +1369,36 @@ function drawMotion(){
   <div class="motionBoard" aria-label="Motion puzzle board">
     ${cells.join('')}
     ${state.data.blocks.map((b,i)=> b.rigid ? `
-      <div class="block rigid ${i===state.data.selected?'selectedBlock':''}" style="top:${b.r*59+4}px;left:${b.c*59+4}px;width:${b.len*56+(b.len-1)*3}px;height:${b.len*56+(b.len-1)*3}px" title="Rigid obstacle"><span>×</span></div>
+      <div class="block rigid ${i===state.data.selected?'selectedBlock':''}" style="top:${b.r*59+4}px;left:${b.c*59+4}px;width:${b.len*56+(b.len-1)*3}px;height:${b.len*56+(b.len-1)*3}px" title="Rigid obstacle"><span>Ã—</span></div>
     ` : `
       <button type="button" class="block ${b.dir} ${b.color} ${i===state.data.selected?'selectedBlock':''}"
         style="top:${b.r*59+4}px;left:${b.c*59+4}px;width:${b.dir==='h'?(b.len*56+(b.len-1)*3):52}px;height:${b.dir==='v'?(b.len*56+(b.len-1)*3):52}px"
         onpointerdown="motionPointerDown(event,'block',${i})" title="Drag ${b.dir==='h'?'horizontally':'vertically'}">
-        <span class="blockGrip">⋮</span>
+        <span class="blockGrip">â‹®</span>
       </button>`).join('')}
   </div>`;
 
   $('#motionStage').innerHTML=`
   <div class="instruction">
-    <div class="eyebrow">Question ${state.pass+1} of ${state.total} · ${state.difficulty.toUpperCase()} spatial planning</div>
+    <div class="eyebrow">Question ${state.pass+1} of ${state.total} Â· ${state.difficulty.toUpperCase()} spatial planning</div>
     <h2>Move the red ball into the black hole</h2>
-    <p>Drag coloured blocks along their axis. <b>× blocks are rigid</b> and cannot move. Move the red ball through open cells. Use the fewest moves possible.</p>
+    <p>Drag coloured blocks along their axis. <b>Ã— blocks are rigid</b> and cannot move. Move the red ball through open cells. Use the fewest moves possible.</p>
   </div>
   ${board}
   <div class="center">
-    <span class="pill">Moves: ${state.data.moves} · Minimum: ${state.data.minMoves} · ${state.data.solved?'SOLVED':'Drag blocks / ball'}</span>
+    <span class="pill">Moves: ${state.data.moves} Â· Minimum: ${state.data.minMoves} Â· ${state.data.solved?'SOLVED':'Drag blocks / ball'}</span>
   </div>
   <div id="fb" class="feedback"></div>
   <div class="motionLegend">
     <span><i class="legendBall"></i> Red ball</span>
     <span><i class="legendHole"></i> Black hole</span>
-    <span><i class="legendRigid">×</i> Rigid</span>
+    <span><i class="legendRigid">Ã—</i> Rigid</span>
   </div>
   <div class="motionControls">
-    <button type="button" onclick="moveBall(-1,0)" title="Ball Up">▲</button>
-    <button type="button" onclick="moveBall(1,0)" title="Ball Down">▼</button>
-    <button type="button" onclick="moveBall(0,-1)" title="Ball Left">◀</button>
-    <button type="button" onclick="moveBall(0,1)" title="Ball Right">▶</button>
+    <button type="button" onclick="moveBall(-1,0)" title="Ball Up">â–²</button>
+    <button type="button" onclick="moveBall(1,0)" title="Ball Down">â–¼</button>
+    <button type="button" onclick="moveBall(0,-1)" title="Ball Left">â—€</button>
+    <button type="button" onclick="moveBall(0,1)" title="Ball Right">â–¶</button>
     <span class="controlHint">Shift + arrows = selected block</span>
   </div>
   <div class="controls" style="margin-top:16px">
@@ -1423,7 +1455,7 @@ function finishGame(timeout = false){
       <div class="big">${state.score}</div>
       <h2>${games[state.game].title}</h2>
       <p>Result recorded across all ${state.total} questions. Continue to the next challenge in your suite.</p>
-      <div class="controls"><button class="btn blue" onclick="continueSuite()">Next challenge →</button></div>
+      <div class="controls"><button class="btn blue" onclick="continueSuite()">Next challenge â†’</button></div>
     </div>`;
     return;
   }
@@ -1466,7 +1498,7 @@ function showExamReport(){
     <nav class="nav">
       <button onclick="go('home')">Games</button>
       <button onclick="window.showGuide()">How it works</button>
-      <button onclick="toggleTheme()" class="themeToggle"><span>Dark</span> ◐</button>
+      <button onclick="toggleTheme()" class="themeToggle"><span>Dark</span> â—</button>
     </nav>
   </header>
   <main class="shell">

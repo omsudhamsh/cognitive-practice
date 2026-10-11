@@ -1,0 +1,14 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "redirects": [
+    {
+      "source": "/AILITRACY-CORECS-MCQS",
+      "destination": "/mock-1",
+      "permanent": true
+    }
+  ],
+  "rewrites": [
+    { "source": "/mock-1", "destination": "/mock-1/index.html" },
+    { "source": "/mock-2", "destination": "/mock-2/index.html" }
+  ]
+}
